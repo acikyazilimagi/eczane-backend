@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Acil",
+        "typeId": 1
+    },
+    {
+        "name": "Genel",
+        "typeId": 1
+    },
+    {
+        "name": "Acil",
+        "typeId": 2
+    },
+    {
+        "name": "Genel",
+        "typeId": 2
+    },
+    {
+        "name": " Sahra Hastanesi",
+        "typeId": 1
+    },
+    {
+        "name": "Sahra Eczanesi",
+        "typeId": 2
+    }
+]
