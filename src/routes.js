@@ -3,6 +3,7 @@ const { getAll, write, seed } = require('./db/')
 
 const locations = require('../data/locations.json')
 const types = require('../data/types.json')
+const subtypes = require('../data/subtypes.json')
 const cityData = require('../data/city-data.json')
 const { turkishToEnglish } = require('../lib/language')
 
@@ -27,7 +28,20 @@ router.get('/', async (req, res) => {
 
   return res.json({
     ok: true,
-    data: locationData,
+    data: locationData.map((l) => {
+      const type = types.find((t) => t.id == l.typeId)
+      const subType = subtypes.find((t) => t.id == l.subTypeId)
+      const city = cityData.find((c) => c.id == l.cityId)
+      const district = city ? city.districts.find((d) => d.id == l.districtId) : null
+      return {
+        ...l,
+        type: type ? type.name : '',
+        subType: subType ? subType.name : '',
+        city: city ? city.key : '',
+        district: district ? district.key : '',
+      }
+    }),
+
   })
 })
 
