@@ -38,6 +38,20 @@ router.get('/cityWithDistricts', async (req, res) => {
   })
 })
 
+router.get('/types', async (req, res) => {
+  return res.json({
+    ok: true,
+    data: types && types.length ? types : [],
+  })
+})
+
+router.get('/subtypes', async (req, res) => {
+  return res.json({
+    ok: true,
+    data: subtypes && subtypes.length ? subtypes : [],
+  })
+})
+
 // write public
 router.post('/', async (req, res) => {
   let { location } = req.body
