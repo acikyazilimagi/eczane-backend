@@ -5,7 +5,6 @@ const locations = require('../data/locations.json')
 const types = require('../data/types.json')
 const cityData = require('../data/city-data.json')
 const { turkishToEnglish } = require('../lib/language')
-const fs = require('fs')
 
 router.get('/', async (req, res) => {
   const typeParam = req.query.type
@@ -25,7 +24,7 @@ router.get('/', async (req, res) => {
 
     locationData = locationData.filter((l) => l.typeId == type.id)
   }
-    
+
   return res.json({
     ok: true,
     data: locationData,
