@@ -10,11 +10,11 @@ GET `https://apieczane.afetharita.com/api`
 
 #### Query Parametreleri
 
-Type: integer
+Type: string - optional
 
 Örnek: GET `https://apieczane.afetharita.com/api?type=Hastane`
 
-Possible values: hastaneler için `Hastane`, eczaneler için `Eczane`
+Possible values: hastaneler için `Hastane`, eczaneler için `Eczane`. Eğer type gönderilmezse bütün data dönecektir.
 
 ```
 {   "ok": true,
