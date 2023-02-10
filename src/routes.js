@@ -3,6 +3,7 @@ const { getAll, write, seed } = require('./db/')
 
 const locations = require('../data/locations.json')
 const types = require('../data/types.json')
+const cityData = require('../data/city-data.json')
 const { turkishToEnglish } = require('../lib/language')
 const fs = require('fs')
 
@@ -28,6 +29,13 @@ router.get('/', async (req, res) => {
   return res.json({
     ok: true,
     data: locationData,
+  })
+})
+
+router.get('/cityWithDistricts', async (req, res) => {
+  return res.json({
+    ok: true,
+    data: cityData && cityData.length ? cityData : [],
   })
 })
 
