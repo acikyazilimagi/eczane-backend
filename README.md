@@ -10,11 +10,11 @@ GET `https://apieczane.afetharita.com/api`
 
 #### Query Parametreleri
 
-Type: integer
+Type: string - optional
 
-Örnek: GET `https://apieczane.afetharita.com/api?type=1`
+Örnek: GET `https://apieczane.afetharita.com/api?type=Hastane`
 
-Possible values: hastaneler için `1`, eczaneler için `2`
+Possible values: hastaneler için `Hastane`, eczaneler için `Eczane`. Eğer type gönderilmezse bütün data dönecektir.
 
 ```
 {   "ok": true,
@@ -29,18 +29,16 @@ Possible values: hastaneler için `1`, eczaneler için `2`
             "districtId": 608,
             "latitude": 38.38724298287497,
             "longitude": 38.32032953088737,
+            "type": "Eczane",
+            "subType": "Genel",
+            "city": "Malatya",
+            "district: "Battalgaazi",
             "typeId": 2,
             "subTypeId": 4
         },
         ...
 ]}
 ```
-
-`typeId`: 1 ise hastane, 2 ise eczane
-
-`subTypeId`: 1 ise acil hastane, 2 ise genel eczane, 3 ise acil eczane, 4 ise genel eczane, 5 ise sahre hastanesi, 6 ise sahra eczanesi
-
-`cityId ve districtId`: aşağı bakın
 
 ### Get All Cities and Districts
 
