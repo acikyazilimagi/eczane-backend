@@ -48,3 +48,12 @@ exports.updateLocation = async (locationId, location) => {
     return null
   }
 }
+
+exports.deleteLocation = async (locationId) => {
+  try {
+    return sql`delete from locations where id = ${locationId}`
+  } catch (e) {
+    console.log(e)
+    return null
+  }
+}
