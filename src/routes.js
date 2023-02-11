@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
         ok: false,
         message: 'Geçersiz tip',
         code: 400,
-      })
+      }).status(400)
     }
 
     locations = locations.filter((l) => l.typeId == type.id)
@@ -84,14 +84,14 @@ router.post('/', async (req, res) => {
       ok: false,
       message: `Eksik anahtarlar: ${missingKeys.join(', ')}`,
       code: 400,
-    })
+    }).status(400)
   }
 
   try {
     await insertLocation([location])
     return res.json({ ok: true })
   } catch (e) {
-    return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 })
+    return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 }).status(500)
   }
 })
 
@@ -100,7 +100,7 @@ router.post('/location/:id', async (req, res) => {
   const { location } = req.body
 
   if (req.headers['authorization'] !== process.env.SEED_KEY) {
-    return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 })
+    return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 }).status(401)
   }
 
   try {
@@ -108,7 +108,7 @@ router.post('/location/:id', async (req, res) => {
     return res.json({ ok: true })
   } catch (e) {
     console.log(e)
-    return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 })
+    return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 }).status(500)
   }
 })
 
@@ -116,7 +116,7 @@ router.delete('/location/:id', async (req, res) => {
   const { id } = req.params
   
   if (req.headers['authorization'] !== process.env.SEED_KEY) {
-    return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 })
+    return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 }).status(401)
   }
 
   try {
@@ -124,7 +124,7 @@ router.delete('/location/:id', async (req, res) => {
     return res.json({ ok: true })
   } catch (e) {
     console.log(e)
-    return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 })
+    return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 }).status(500)
   }
 })
 
