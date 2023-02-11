@@ -3,6 +3,7 @@ const { getAllLocations, insertLocation, updateLocation } = require('./db/')
 const types = require('../data/types.json')
 const subtypes = require('../data/subtypes.json')
 const cityData = require('../data/city-data.json')
+const { deleteLocation } = require('./db/queries')
 
 // get all locations
 router.get('/', async (req, res) => {
@@ -98,12 +99,28 @@ router.post('/location/:id', async (req, res) => {
   const { id } = req.params
   const { location } = req.body
 
-  if (req.headers['Authorization'] !== process.env.SEED_KEY) {
+  if (req.headers['authorization'] !== process.env.SEED_KEY) {
     return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 })
   }
 
   try {
     await updateLocation(id, location)
+    return res.json({ ok: true })
+  } catch (e) {
+    console.log(e)
+    return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 })
+  }
+})
+
+router.delete('/location/:id', async (req, res) => {
+  const { id } = req.params
+  
+  if (req.headers['authorization'] !== process.env.SEED_KEY) {
+    return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 })
+  }
+
+  try {
+    await deleteLocation(id);
     return res.json({ ok: true })
   } catch (e) {
     console.log(e)
