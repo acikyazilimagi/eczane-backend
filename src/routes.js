@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { getAllLocations, insertLocation, seed } = require('./db/')
+const { getAllLocations, insertLocation, updateLocation } = require('./db/')
 const types = require('../data/types.json')
 const subtypes = require('../data/subtypes.json')
 const cityData = require('../data/city-data.json')
@@ -90,6 +90,19 @@ router.post('/', async (req, res) => {
     await insertLocation([location])
     return res.json({ ok: true })
   } catch (e) {
+    return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 })
+  }
+})
+
+router.post('/location/:id', async (req, res) => {
+  const { id } = req.params
+  const { location } = req.body
+
+  try {
+    await updateLocation(id, location)
+    return res.json({ ok: true })
+  } catch (e) {
+    console.log(e)
     return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 })
   }
 })
