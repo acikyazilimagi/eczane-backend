@@ -7,24 +7,24 @@ const cityData = require('../data/city-data.json')
 // get all locations
 router.get('/', async (req, res) => {
   const typeParam = req.query.type
-
-  let locations = await getAllLocations()
-
-  if (typeParam) {
-    const type = types.find((t) => t.name == typeParam)
-
-    if (type === undefined) {
-      return res
-        .json({
-          ok: false,
-          message: 'Geçersiz tip',
-          code: 400,
-        })
-        .status(400)
-    }
-
-    locations = locations.filter((l) => l.typeId == type.id)
+  if (!typeParam) {
+    return res
+      .json({
+        ok: false,
+        message: 'Tip parametresi eksik',
+        code: 400,
+      })
+      .status(400)
   }
+  let locations = await getAllLocations()
+  if (!locations) {
+
+    return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 }).status(500);
+  }
+
+  const type = types.find((t) => t.name == typeParam)
+  locations = locations.filter((l) => l.typeId == type.id)
+
 
   return res.json({
     ok: true,
@@ -60,9 +60,16 @@ router.get('/subtypes', async (req, res) => {
 
 // write public
 router.post('/', async (req, res) => {
-  let { location } = req.body
+  const { location } = req.body
+  if (!location) {
+    return res
+      .json({
+        ok: false,
+        message: `Eksik anahtar`,
+        code: 400,
+      })
+  }
 
-  // validate all keys exist
   location = {
     ...location,
     workingHours: location.workingHours || '',
@@ -91,13 +98,20 @@ router.post('/', async (req, res) => {
 })
 
 router.post('/location/:id', async (req, res) => {
-  const { id } = req.params
-  const { location } = req.body
 
   if (req.headers['authorization'] !== process.env.SEED_KEY) {
     return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 }).status(401)
   }
-
+  const { id } = req.params
+  const { location } = req.body
+  if (!location || !id) {
+    return res
+      .json({
+        ok: false,
+        message: `Eksik Key`,
+        code: 400,
+      })
+  }
   try {
     await updateLocation(id, location)
     return res.json({ ok: true })
@@ -109,7 +123,14 @@ router.post('/location/:id', async (req, res) => {
 
 router.delete('/location/:id', async (req, res) => {
   const { id } = req.params
-
+  if (!id) {
+    return res
+      .json({
+        ok: false,
+        message: `Eksik Key`,
+        code: 400,
+      })
+  }
   if (req.headers['authorization'] !== process.env.SEED_KEY) {
     return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 }).status(401)
   }
@@ -142,7 +163,16 @@ router.post('/types', async (req, res) => {
       return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 }).status(401)
     }
 
-    let { type } = req.body
+    const { type } = req.body
+    if (!type) {
+      return res
+        .json({
+          ok: false,
+          message: 'Tip parametresi eksik',
+          code: 400,
+        })
+        .status(400)
+    }
 
     const keys = Object.keys(type)
     const requiredKeys = ['name']
@@ -166,13 +196,21 @@ router.post('/types', async (req, res) => {
 })
 
 router.post('/types/:id', async (req, res) => {
-  try {
-    if (req.headers['authorization'] !== process.env.SEED_KEY) {
-      return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 }).status(401)
-    }
 
-    let { id } = req.params
-    let { type } = req.body
+  if (req.headers['authorization'] !== process.env.SEED_KEY) {
+    return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 }).status(401)
+  }
+  const { id } = req.params
+  const { type } = req.body
+  if (!type || !id) {
+    return res
+      .json({
+        ok: false,
+        message: `Eksik Key`,
+        code: 400,
+      })
+  }
+  try {
 
     await updateType(id, type)
     return res.json({ ok: true })
@@ -183,13 +221,19 @@ router.post('/types/:id', async (req, res) => {
 })
 
 router.delete('/types/:id', async (req, res) => {
+  if (req.headers['authorization'] !== process.env.SEED_KEY) {
+    return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 }).status(401)
+  }
+  const { id } = req.params
+  if (!id) {
+    return res
+      .json({
+        ok: false,
+        message: `Eksik Key`,
+        code: 400,
+      })
+  }
   try {
-    if (req.headers['authorization'] !== process.env.SEED_KEY) {
-      return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 }).status(401)
-    }
-
-    let { id } = req.params
-
     await deleteType(id)
     return res.json({ ok: true })
   } catch (e) {

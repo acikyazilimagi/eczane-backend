@@ -1,11 +1,10 @@
+const { query } = require('express');
 const { sql } = require('./connect')
 
 exports.getAllLocations = async () => {
-  try {
-    return sql`select * from locations`
-  } catch (e) {
-    return null
-  }
+  const query = await sql`select * from locations`;
+  if (!query) return false;
+  return query;
 }
 
 exports.insertLocation = async (locations) => {
@@ -15,8 +14,8 @@ exports.insertLocation = async (locations) => {
     additionalAddressDetails: l.addressDetails,
   }))
 
-  try {
-    let result = await sql`insert into locations ${sql(
+  
+    const query = await sql`insert into locations ${sql(
       locationsMapped,
       'name',
       'phone',
@@ -31,69 +30,65 @@ exports.insertLocation = async (locations) => {
       'code',
       'subTypeId',
     )}`
-    return result
-  } catch (e) {
-    return null
-  }
+    if (!query) return false;
+    return query;
+   
+  
 }
 
 exports.updateLocation = async (locationId, location) => {
   const keys = Object.keys(location)
-
-  try {
-    return sql`update locations set ${sql(location, ...keys)}
-    where id = ${locationId}`
-  } catch (e) {
-    console.log(e)
-    return null
+  if (!keys.length) {
+    return false
   }
+
+  const query = await sql`update locations set ${sql(location, ...keys)}
+    where id = ${locationId}`
+  if (!query) return false;
+  return query;
 }
 
 exports.deleteLocation = async (locationId) => {
-  try {
-    return sql`delete from locations where id = ${locationId}`
-  } catch (e) {
-    console.log(e)
-    return null
+  
+    const query = await sql`delete from locations where id = ${locationId}`
+    if(!query) return false;
+    return query;
   }
-}
 
 exports.getAllTypes = async () => {
-  try {
-    return sql`select * from types`;
-  } catch (e) {
-    console.log(e);
-    return null;
-  }
+  
+  const query = sql`select * from types`;
+  if (!query) return false;
+  return query;
+  
 };
 
 exports.insertType = async (type) => {
-  try{
-    return sql`insert into types ${sql(
+  
+    const query = sql`insert into types ${sql(
       type,
       'name'
       )}`;
-  } catch (e){
-    console.log(e);
-    return null;
-  }
+    if (!query) return false;
+    return query;
+ 
 };
 
 exports.updateType = async (typeId, type) => {
-  try {
+
     const typeKeys = Object.keys(type);
-    return sql`update types set ${sql(type, ...typeKeys)} where id = ${typeId}`;
-  } catch (e) {
-    console.log(e);
-    return null;
-  }
+
+    const query = sql`update types set ${sql(type, ...typeKeys)} where id = ${typeId}`;
+    if (!query) return false;
+    return query;
+  
+  
 };
 
 exports.deleteType = async (typeId) => {
-  try {
-    return sql`delete from types where id = ${typeId}`;
-  } catch (e) {
-    console.log(e);
-    return null;
-  }
+
+    const query = sql`delete from types where id = ${typeId}`;
+    if (!query) return false;
+    return query;
+ 
 };
