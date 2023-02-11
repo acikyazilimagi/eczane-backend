@@ -1,4 +1,3 @@
-const { getAll, write } = require('./queries')
-const { seed } = require('./seed')
+const { getAllLocations, insertLocation } = require('./queries')
 
-module.exports = { getAll, write, seed }
+module.exports = { getAllLocations, insertLocation }
