@@ -98,6 +98,10 @@ router.post('/location/:id', async (req, res) => {
   const { id } = req.params
   const { location } = req.body
 
+  if (req.headers['Authorization'] !== process.env.SEED_KEY) {
+    return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 })
+  }
+
   try {
     await updateLocation(id, location)
     return res.json({ ok: true })
