@@ -57,3 +57,43 @@ exports.deleteLocation = async (locationId) => {
     return null
   }
 }
+
+exports.getAllTypes = async () => {
+  try {
+    return sql`select * from types`;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
+
+exports.insertType = async (type) => {
+  try{
+    return sql`insert into types ${sql(
+      type,
+      'name'
+      )}`;
+  } catch (e){
+    console.log(e);
+    return null;
+  }
+};
+
+exports.updateType = async (typeId, type) => {
+  try {
+    const typeKeys = Object.keys(type);
+    return sql`update types set ${sql(type, ...typeKeys)} where id = ${typeId}`;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
+
+exports.deleteType = async (typeId) => {
+  try {
+    return sql`delete from types where id = ${typeId}`;
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+};
