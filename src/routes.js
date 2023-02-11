@@ -63,7 +63,7 @@ router.get('/subtypes', async (req, res) => {
   })
 })
 
-// insert location
+// write public
 router.post('/', async (req, res) => {
   let { location } = req.body
   const { districtId, cityId, name } = location
@@ -89,21 +89,6 @@ router.post('/', async (req, res) => {
   try {
     await insertLocation([location])
     return res.json({ ok: true })
-  } catch (e) {
-    return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 })
-  }
-})
-
-router.get('/seed', async (req, res) => {
-  try {
-    if (req.query.key == process.env.SEED_KEY) {
-      await seed.cityData()
-      await seed.typeData()
-      await seed.locationData()
-      return res.json({ ok: true })
-    } else {
-      return res.json({ ok: false, msg: 'İzniniz bulunmamaktadır.', code: 401 })
-    }
   } catch (e) {
     return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 })
   }
