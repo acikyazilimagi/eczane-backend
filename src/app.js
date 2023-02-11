@@ -10,4 +10,4 @@ app.use(cors())
 
 app.use('/api', router)
 
-exports.app = app
+module.exports = app
