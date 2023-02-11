@@ -6,13 +6,13 @@ Kullanılabilir durumdaki eczane ve hastanelerin datasını gönderen API.
 
 ### Get All Locations
 
-GET `https://apieczane.afetharita.com/api`
+GET `https://eczaneapi.afetharita.com/api`
 
 #### Query Parametreleri
 
 Type: string - optional
 
-Örnek: GET `https://apieczane.afetharita.com/api?type=Hastane`
+Örnek: GET `https://eczaneapi.afetharita.com/api?type=Hastane`
 
 Possible values: hastaneler için `Hastane`, eczaneler için `Eczane`. Eğer type gönderilmezse bütün data dönecektir.
 
@@ -42,7 +42,7 @@ Possible values: hastaneler için `Hastane`, eczaneler için `Eczane`. Eğer typ
 
 ### Get All Cities and Districts
 
-GET `https://apieczane.afetharita.com/api/cityWithDistricts`
+GET `https://eczaneapi.afetharita.com/api/cityWithDistricts`
 
 ```
 {
