@@ -1,16 +1,14 @@
 const router = require('express').Router()
-const { getAll, write, seed } = require('./db/')
-
-const locations = require('../data/locations.json')
+const { getAllLocations, insertLocation, seed } = require('./db/')
 const types = require('../data/types.json')
 const subtypes = require('../data/subtypes.json')
 const cityData = require('../data/city-data.json')
-const { turkishToEnglish } = require('../lib/language')
 
+// get all locations
 router.get('/', async (req, res) => {
   const typeParam = req.query.type
 
-  let locationData = locations && locations.length ? locations : []
+  let locations = await getAllLocations()
 
   if (typeParam) {
     const type = types.find((t) => t.name == typeParam)
@@ -23,12 +21,12 @@ router.get('/', async (req, res) => {
       })
     }
 
-    locationData = locationData.filter((l) => l.typeId == type.id)
+    locations = locations.filter((l) => l.typeId == type.id)
   }
 
   return res.json({
     ok: true,
-    data: locationData.map((l) => {
+    data: locations.map((l) => {
       const type = types.find((t) => t.id == l.typeId)
       const subType = subtypes.find((t) => t.id == l.subTypeId)
       const city = cityData.find((c) => c.id == l.cityId)
@@ -41,7 +39,6 @@ router.get('/', async (req, res) => {
         district: district ? district.key : '',
       }
     }),
-
   })
 })
 
@@ -66,19 +63,20 @@ router.get('/subtypes', async (req, res) => {
   })
 })
 
-// write public
+// insert location
 router.post('/', async (req, res) => {
   let { location } = req.body
   const { districtId, cityId, name } = location
 
-  // validate that all keys exist
+  // validate all keys exist
   location = {
     ...location,
     workingHours: location.workingHours || '',
     additionalAddressDetails: location.additionalAddressDetails || '',
   }
+
   const keys = Object.keys(location)
-  const requiredKeys = ['name', 'code', 'latitude', 'longitude', 'phone', 'districtId', 'cityId', 'address', 'additionalAddressDetails', 'workingHours', 'typeId', 'subTypeId']
+  const requiredKeys = ['name', 'code', 'latitude', 'longitude', 'phone', 'districtId', 'cityId', 'address', 'additionalAddressDetails', 'typeId', 'subTypeId']
   const missingKeys = requiredKeys.filter((k) => !keys.includes(k))
   if (missingKeys.length) {
     return res.json({
@@ -88,23 +86,8 @@ router.post('/', async (req, res) => {
     })
   }
 
-  // check for duplicates
-  if (
-    locations.some((l) => l.cityId == cityId && l.districtId == districtId && turkishToEnglish(name).toLowerCase().split(' ').join('') == turkishToEnglish(l.name).toLowerCase().split(' ').join(''))
-  ) {
-    return res.json({
-      ok: true,
-      message: 'Adres mevcut',
-      code: 409,
-    })
-  }
-
   try {
-    // add to local
-    locations.push(location)
-
-    // add to db - no wait
-    write([location])
+    await insertLocation([location])
     return res.json({ ok: true })
   } catch (e) {
     return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 })

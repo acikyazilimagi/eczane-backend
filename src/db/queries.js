@@ -1,16 +1,14 @@
 const { sql } = require('./connect')
 
-exports.getAll = async () => {
+exports.getAllLocations = async () => {
   try {
-    const [hospitals, pharmacies] = await Promise.all([sql`select * from locations`])
-
-    return [...hospitals, ...pharmacies]
+    return sql`select * from locations`
   } catch (e) {
     return null
   }
 }
 
-exports.write = async (locations) => {
+exports.insertLocation = async (locations) => {
   const locationsMapped = locations.map((l) => ({
     ...l,
     workingHours: l.workingHours || '',
