@@ -14,11 +14,13 @@ router.get('/', async (req, res) => {
     const type = types.find((t) => t.name == typeParam)
 
     if (type === undefined) {
-      return res.json({
-        ok: false,
-        message: 'Geçersiz tip',
-        code: 400,
-      }).status(400)
+      return res
+        .json({
+          ok: false,
+          message: 'Geçersiz tip',
+          code: 400,
+        })
+        .status(400)
     }
 
     locations = locations.filter((l) => l.typeId == type.id)
@@ -49,13 +51,6 @@ router.get('/cityWithDistricts', async (req, res) => {
   })
 })
 
-router.get('/types', async (req, res) => {
-  return res.json({
-    ok: true,
-    data: types && types.length ? types : [],
-  })
-})
-
 router.get('/subtypes', async (req, res) => {
   return res.json({
     ok: true,
@@ -66,7 +61,6 @@ router.get('/subtypes', async (req, res) => {
 // write public
 router.post('/', async (req, res) => {
   let { location } = req.body
-  const { districtId, cityId, name } = location
 
   // validate all keys exist
   location = {
@@ -79,11 +73,13 @@ router.post('/', async (req, res) => {
   const requiredKeys = ['name', 'code', 'latitude', 'longitude', 'phone', 'districtId', 'cityId', 'address', 'additionalAddressDetails', 'typeId', 'subTypeId']
   const missingKeys = requiredKeys.filter((k) => !keys.includes(k))
   if (missingKeys.length) {
-    return res.json({
-      ok: false,
-      message: `Eksik anahtarlar: ${missingKeys.join(', ')}`,
-      code: 400,
-    }).status(400)
+    return res
+      .json({
+        ok: false,
+        message: `Eksik anahtarlar: ${missingKeys.join(', ')}`,
+        code: 400,
+      })
+      .status(400)
   }
 
   try {
@@ -113,13 +109,13 @@ router.post('/location/:id', async (req, res) => {
 
 router.delete('/location/:id', async (req, res) => {
   const { id } = req.params
-  
+
   if (req.headers['authorization'] !== process.env.SEED_KEY) {
     return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 }).status(401)
   }
 
   try {
-    await deleteLocation(id);
+    await deleteLocation(id)
     return res.json({ ok: true })
   } catch (e) {
     console.log(e)
@@ -128,61 +124,63 @@ router.delete('/location/:id', async (req, res) => {
 })
 
 router.get('/types', async (req, res) => {
-  try{
-    let types = getAllTypes();
+  try {
+    let types = getAllTypes()
     return res.json({
       ok: true,
-      data: types
-    });
+      data: types,
+    })
   } catch (e) {
-    console.log(e);
-    return res.json({ok: false, msg: 'Bir hata oluştu', code: 500}).status(500);
+    console.log(e)
+    return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 }).status(500)
   }
-});
+})
 
 router.post('/types', async (req, res) => {
-  try{
+  try {
     if (req.headers['authorization'] !== process.env.SEED_KEY) {
       return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 }).status(401)
     }
 
-    let { type } = req.body;
+    let { type } = req.body
 
-    const keys = Object.keys(type);
-    const requiredKeys = ['name'];
-    const missingKeys = requiredKeys.filter((key) => !keys.includes(key));
+    const keys = Object.keys(type)
+    const requiredKeys = ['name']
+    const missingKeys = requiredKeys.filter((key) => !keys.includes(key))
     if (missingKeys.length) {
-      return res.json({
-        ok: false,
-        message: `Eksik anahtarlar: ${missingKeys.join(', ')}`,
-        code: 400,
-      }).status(400)
+      return res
+        .json({
+          ok: false,
+          message: `Eksik anahtarlar: ${missingKeys.join(', ')}`,
+          code: 400,
+        })
+        .status(400)
     }
 
-    await insertType(type);
-    return res.json({ok: true});
+    await insertType(type)
+    return res.json({ ok: true })
   } catch (e) {
-    console.log(e);
-    return res.json({ok: false, msg: 'Bir hata oluştu', code: 500}).status(500);
+    console.log(e)
+    return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 }).status(500)
   }
-});
+})
 
 router.post('/types/:id', async (req, res) => {
-  try{
+  try {
     if (req.headers['authorization'] !== process.env.SEED_KEY) {
       return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 }).status(401)
     }
 
-    let { id } = req.params;
-    let { type } = req.body;
+    let { id } = req.params
+    let { type } = req.body
 
-    await updateType(id, type);
-    return res.json({ok: true });
+    await updateType(id, type)
+    return res.json({ ok: true })
   } catch (e) {
-    console.log(e);
-    return res.json({ok: false, msg: 'Bir hata oluştu', code: 500}).status(500);
+    console.log(e)
+    return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 }).status(500)
   }
-});
+})
 
 router.delete('/types/:id', async (req, res) => {
   try {
@@ -190,15 +188,15 @@ router.delete('/types/:id', async (req, res) => {
       return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 }).status(401)
     }
 
-    let { id } = req.params;
+    let { id } = req.params
 
-    await deleteType(id);
-    return res.json({ok: true });
-   } catch (e) {
-    console.log(e);
-    return res.json({ok: false, msg: 'Bir hata oluştu', code: 500}).status(500);
+    await deleteType(id)
+    return res.json({ ok: true })
+  } catch (e) {
+    console.log(e)
+    return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 }).status(500)
   }
-});
+})
 
 router.get('/health', (req, res) => {
   res.status(200).send()
