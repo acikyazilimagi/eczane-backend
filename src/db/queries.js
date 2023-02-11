@@ -39,7 +39,6 @@ exports.insertLocation = async (locations) => {
 
 exports.updateLocation = async (locationId, location) => {
   const keys = Object.keys(location)
-  console.log(JSON.stringify(sql(location, ...keys)))
 
   try {
     return sql`update locations set ${sql(location, ...keys)}
