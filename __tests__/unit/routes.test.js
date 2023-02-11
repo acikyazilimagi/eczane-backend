@@ -83,9 +83,11 @@ describe('insert', () => {
 describe('update', () => {
   it('should send unauthorized', async () => {
     const { body } = await request(app).post('/api/location/1').send({ location }).expect(401)
+    expect(typeof body).toBe('object') && expect(body.ok).toBe(true)
+  })
 
-    console.log(body)
-
+  it('should update data', async () => {
+    const { body } = await request(app).set('authorization', process.env.SEED_KEY).post('/api/location/1').send({ location }).expect(200)
     expect(typeof body).toBe('object') && expect(body.ok).toBe(true)
   })
 })
