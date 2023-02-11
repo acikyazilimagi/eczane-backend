@@ -36,3 +36,16 @@ exports.insertLocation = async (locations) => {
     return null
   }
 }
+
+exports.updateLocation = async (locationId, location) => {
+  const keys = Object.keys(location)
+  console.log(JSON.stringify(sql(location, ...keys)))
+
+  try {
+    return sql`update locations set ${sql(location, ...keys)}
+    where id = ${locationId}`
+  } catch (e) {
+    console.log(e)
+    return null
+  }
+}
