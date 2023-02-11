@@ -23,6 +23,7 @@ describe('/', () => {
   beforeAll(() => {
     sinon.stub(queries, 'getAllLocations').resolves([{}, {}, {}])
     sinon.stub(queries, 'insertLocation').resolves({})
+    sinon.stub(queries, 'deleteLocation').resolves({})
   })
   afterAll(() => {
     // app.close()
@@ -81,13 +82,32 @@ describe('insert', () => {
 })
 
 describe('update', () => {
-  it('should send unauthorized', async () => {
+  it('should send unauthorized without token', async () => {
     const { body } = await request(app).post('/api/location/1').send({ location }).expect(401)
     expect(typeof body).toBe('object') && expect(body.ok).toBe(true)
   })
 
+  it('should send unauthorized with bad token', async () => {
+    ;[`${process.env.SEED_KEY}123`, `${process.env.SEED_KEY}123${process.env.SEED_KEY}`, `${process.env.SEED_KEY}_${process.env.SEED_KEY}`].map((s) => async () => {
+      const { body } = await request(app).post('/api/location/1').set('authorization', s).send({ location }).expect(200)
+      expect(typeof body).toBe('object') && expect(body.ok).toBe(true)
+    })
+  })
+
   it('should update data', async () => {
-    const { body } = await request(app).set('authorization', process.env.SEED_KEY).post('/api/location/1').send({ location }).expect(200)
+    const { body } = await request(app).post('/api/location/1').set('authorization', process.env.SEED_KEY).send({ location }).expect(200)
+    expect(typeof body).toBe('object') && expect(body.ok).toBe(true)
+  })
+})
+
+describe('delete', () => {
+  it('should send unauthorized without token', async () => {
+    const { body } = await request(app).delete('/api/location/1').send({ location }).expect(401)
+    expect(typeof body).toBe('object') && expect(body.ok).toBe(true)
+  })
+
+  it('should delete', async () => {
+    const { body } = await request(app).delete('/api/location/1').set('authorization', process.env.SEED_KEY).send({ location }).expect(200)
     expect(typeof body).toBe('object') && expect(body.ok).toBe(true)
   })
 })
