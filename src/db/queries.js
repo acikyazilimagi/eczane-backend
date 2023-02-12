@@ -2,7 +2,7 @@ const { sql } = require('./connect')
 
 exports.getAllLocations = async () => {
   try {
-    return await sql`select * from locations`
+    return await sql`select * from locations where isValidated`
   } catch (e) {
     return null
   }
