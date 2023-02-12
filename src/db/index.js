@@ -1,3 +1,30 @@
-const { getAllLocations, insertLocation, updateLocation } = require('./queries')
+const {
+  getAllLocations,
+  insertLocation,
+  updateLocation,
+  deleteLocation,
+  getAllTypes,
+  insertType,
+  updateType,
+  deleteType,
+  getAllSubtypes,
+  insertSubtype,
+  updateSubtype,
+  deleteSubtype,
+} = require('./queries')
 
-module.exports = { getAllLocations, insertLocation, updateLocation }
+module.exports = {
+  getAllLocations,
+  insertLocation,
+  updateLocation,
+  deleteLocation,
+  getAllTypes,
+  getAllTypes,
+  insertType,
+  updateType,
+  deleteType,
+  getAllSubtypes,
+  insertSubtype,
+  updateSubtype,
+  deleteSubtype,
+}
