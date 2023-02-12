@@ -1,13 +1,33 @@
 require('dotenv').config()
 const express = require('express')
-const app = express()
 const cors = require('cors')
-app.use(express.json())
+require('express-async-errors')
+const { errorHandler } = require('./middleware/error')
 
-const { router } = require('./routes')
+class App {
+  #app
+  #routes
 
-app.use(cors())
+  constructor() {
+    this.#app = express()
+    this.middlewares()
+    this.routes()
+  }
 
-app.use('/api', router)
+  middlewares() {
+    this.#app.use(express.json())
+    this.#app.use(cors())
+  }
 
-exports.app = app
+  routes() {
+    const { routes } = require('./routes/index.js')
+    this.#app.use('/api', routes())
+    this.#app.use(errorHandler)
+  }
+
+  listen() {
+    this.#app.listen(process.env.PORT, () => console.log('App started'))
+  }
+}
+
+exports.App = App
