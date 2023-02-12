@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { getAllLocations, insertLocation, updateLocation } = require('./db/')
+const { getAllLocations, insertLocation, updateLocation,validateLocation } = require('./db/')
 const types = require('../data/types.json')
 const subtypes = require('../data/subtypes.json')
 const cityData = require('../data/city-data.json')
@@ -66,8 +66,8 @@ router.get('/subtypes', async (req, res) => {
 
 // write public
 router.post('/', async (req, res) => {
-  let { location } = req.body
-  const { districtId, cityId, name } = location
+  let location = req.body
+  
 
   // validate all keys exist
   location = {
@@ -77,7 +77,7 @@ router.post('/', async (req, res) => {
   }
 
   const keys = Object.keys(location)
-  const requiredKeys = ['name', 'code', 'latitude', 'longitude', 'phone', 'districtId', 'cityId', 'address', 'additionalAddressDetails', 'typeId', 'subTypeId']
+  const requiredKeys = ['name', 'code', 'latitude', 'longitude', 'phone', 'districtId', 'cityId', 'address', 'additionalAddressDetails', 'typeId', 'subTypeId','source']
   const missingKeys = requiredKeys.filter((k) => !keys.includes(k))
   if (missingKeys.length) {
     return res.json({
@@ -105,6 +105,22 @@ router.post('/location/:id', async (req, res) => {
 
   try {
     await updateLocation(id, location)
+    return res.json({ ok: true })
+  } catch (e) {
+    console.log(e)
+    return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 }).status(500)
+  }
+})
+
+router.post('/locationValidate/:id', async (req, res) => {
+  const { id } = req.params
+
+  if (req.headers['authorization'] !== process.env.SEED_KEY) {
+    return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 }).status(401)
+  }
+
+  try {
+    await validateLocation(id)
     return res.json({ ok: true })
   } catch (e) {
     console.log(e)
