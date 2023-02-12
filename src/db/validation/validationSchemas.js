@@ -45,14 +45,14 @@ const locationValidationSchema = {
   },
 }
 
-const typeValidationShema = {
+const typeValidationSchema = {
   name: {
     type: 'string',
     required: true,
   },
 }
 
-const subTypeValidationShema = {
+const subTypeValidationSchema = {
   typeId: {
     type: 'number',
     required: true,
@@ -62,5 +62,6 @@ const subTypeValidationShema = {
     required: true,
   },
 }
+
 
 module.exports= { locationValidationSchema, typeValidationShema, subTypeValidationShema }
