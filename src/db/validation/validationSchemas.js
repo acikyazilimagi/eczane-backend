@@ -63,4 +63,4 @@ const subTypeValidationShema = {
   },
 }
 
-export { locationValidationSchema, typeValidationShema, subTypeValidationShema }
+module.exports= { locationValidationSchema, typeValidationShema, subTypeValidationShema }

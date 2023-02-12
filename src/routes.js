@@ -12,6 +12,7 @@ const {
   insertSubtype,
   updateSubtype,
   deleteSubtype,
+  validateLocation,
 } = require('./db/')
 const { validateData } = require('./db/validation/')
 const types = require('../data/types.json')
@@ -99,6 +100,24 @@ router.post('/', async (req, res) => {
   } catch (e) {
     console.log(e)
     return res.status(500).json({ ok: false, msg: 'Bir hata oluştu', code: 500 })
+  }
+})
+
+
+
+router.post('/locationValidate/:id', async (req, res) => {
+  const { id } = req.params
+
+  if (req.headers['authorization'] !== process.env.SEED_KEY) {
+    return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 }).status(401)
+  }
+
+  try {
+    await validateLocation(id)
+    return res.json({ ok: true })
+  } catch (e) {
+    console.log(e)
+    return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 }).status(500)
   }
 })
 

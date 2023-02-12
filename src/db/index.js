@@ -11,6 +11,7 @@ const {
   insertSubtype,
   updateSubtype,
   deleteSubtype,
+  validateLocation,
 } = require('./queries')
 
 module.exports = {
@@ -27,4 +28,5 @@ module.exports = {
   insertSubtype,
   updateSubtype,
   deleteSubtype,
+  validateLocation,
 }
