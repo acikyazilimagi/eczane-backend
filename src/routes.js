@@ -279,6 +279,7 @@ router.post('/subtypes/:id', async (req, res) => {
   if (req.headers['authorization'] !== process.env.SEED_KEY) {
     return res.json({ ok: false, msg: 'Yetkiniz yok', code: 401 }).status(401)
   }
+
   const { id } = req.params
   const { subtype } = req.body
   if (!subtype || !id) {
