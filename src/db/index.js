@@ -1,5 +1,6 @@
 const {
   getAllLocations,
+  getAllLocationsAdmin,
   insertLocation,
   updateLocation,
   deleteLocation,
@@ -16,10 +17,10 @@ const {
 
 module.exports = {
   getAllLocations,
+  getAllLocationsAdmin,
   insertLocation,
   updateLocation,
   deleteLocation,
-  getAllTypes,
   getAllTypes,
   insertType,
   updateType,
