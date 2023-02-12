@@ -9,7 +9,6 @@ exports.getAllLocations = async () => {
 
 exports.getAllLocationsAdmin = async () => {
   const query = await sql`select * from locations`
-
   return query || false
 }
 
