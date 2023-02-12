@@ -1,6 +1,6 @@
 # Eczane Backend
 
-Kullanılabilir durumdaki eczane ve hastanelerin datasını gönderen API.
+Kullanılabilir durumdaki sağlık birimlerinin datasını gönderen API.
 
 ## API
 
@@ -9,7 +9,7 @@ Kullanılabilir durumdaki eczane ve hastanelerin datasını gönderen API.
 GET `https://eczaneapi.afetharita.com/api/locations`
 
 ```
-{   "ok": true,
+{
     "data": [
         {
             "id": 94,
@@ -31,6 +31,68 @@ GET `https://eczaneapi.afetharita.com/api/locations`
         },
         ...
 ]}
+```
+
+
+### Get Types
+
+GET `https://eczaneapi.afetharita.com/api/types`
+
+```
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "Hastane",
+      "createdAt": "2023-02-10T17:13:53.579Z"
+    },
+    {
+      "id": 2,
+      "name": "Eczane",
+      "createdAt": "2023-02-10T17:13:53.579Z"
+    },
+    {
+      "id": 4,
+      "name": "Veteriner",
+      "createdAt": "2023-02-12T12:17:16.639Z"
+    },
+    {
+      "id": 3,
+      "name": "Psikolojik Destek",
+      "createdAt": "2023-02-12T12:17:16.639Z"
+    }
+  ]
+}
+```
+
+### Get Subtypes
+
+GET `https://eczaneapi.afetharita.com/api/subtypes`
+
+```
+{
+  "data": [
+    {
+      "id": 6,
+      "typeId": 2,
+      "name": "Sahra Eczanesi",
+      "createdAt": "2023-02-10T17:13:55.265Z"
+    },
+    {
+      "id": 5,
+      "typeId": 1,
+      "name": "Sahra Hastanesi",
+      "createdAt": "2023-02-10T17:13:55.265Z"
+    },
+    {
+      "id": 1,
+      "typeId": 1,
+      "name": "Gemi Hastanesi",
+      "createdAt": "2023-02-10T17:13:55.265Z"
+    },
+    ...
+  ]
+}
 ```
 
 ### Get All Cities and Districts
