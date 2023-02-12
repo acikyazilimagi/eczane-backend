@@ -8,14 +8,6 @@ Kullanılabilir durumdaki eczane ve hastanelerin datasını gönderen API.
 
 GET `https://eczaneapi.afetharita.com/api/locations`
 
-#### Query Parametreleri
-
-Type: string - optional
-
-Örnek: GET `https://eczaneapi.afetharita.com/api/locations?type=Hastane`
-
-Possible values: hastaneler için `Hastane`, eczaneler için `Eczane`. Eğer type gönderilmezse bütün data dönecektir.
-
 ```
 {   "ok": true,
     "data": [
