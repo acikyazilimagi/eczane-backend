@@ -2,7 +2,7 @@ const { query } = require('express')
 const { sql } = require('./connect')
 
 exports.getAllLocations = async () => {
-  const query = await sql`select * from locations`
+  const query = await sql`select * from locations where isValidated`
   if (!query) return false
   return query
 }
@@ -25,6 +25,18 @@ exports.insertLocation = async (locations) => {
   if (!query) return false
   return query
 }
+exports.validateLocation = async (locationId) => {
+  
+
+  try {
+    return await sql`update locations set isValidated = true
+    where id = ${locationId}`
+  } catch (e) {
+    console.log(e)
+    return null
+
+  }
+}
 
 exports.updateLocation = async (locationId, location) => {
   const keys = Object.keys(location)
@@ -45,13 +57,13 @@ exports.deleteLocation = async (locationId) => {
 }
 
 exports.getAllTypes = async () => {
-  const query = sql`select * from types`
+  const query = await sql`select * from types`
   if (!query) return false
   return query
 }
 
 exports.insertType = async (type) => {
-  const query = sql`insert into types ${sql(type, 'name')}`
+  const query = await sql`insert into types ${sql(type, 'name')}`
   if (!query) return false
   return query
 }
@@ -59,25 +71,25 @@ exports.insertType = async (type) => {
 exports.updateType = async (typeId, type) => {
   const typeKeys = Object.keys(type)
 
-  const query = sql`update types set ${sql(type, ...typeKeys)} where id = ${typeId}`
+  const query = await sql`update types set ${sql(type, ...typeKeys)} where id = ${typeId}`
   if (!query) return false
   return query
 }
 
 exports.deleteType = async (typeId) => {
-  const query = sql`delete from types where id = ${typeId}`
+  const query = await sql`delete from types where id = ${typeId}`
   if (!query) return false
   return query
 }
 
 exports.getAllSubtypes = async () => {
-  const query = sql`select * from subtypes`
+  const query = await sql`select * from subtypes`
   if (!query) return false
   return query
 }
 
 exports.insertSubtype = async (subtype) => {
-  const query = sql`insert into subtypes ${sql(subtype, 'typeId', 'name')}`
+  const query = await sql`insert into subtypes ${sql(subtype, 'typeId', 'name')}`
   if (!query) return false
   return query
 }
@@ -85,13 +97,13 @@ exports.insertSubtype = async (subtype) => {
 exports.updateSubtype = async (subtypeId, subtype) => {
   const subtypeKeys = Object.keys(type)
 
-  const query = sql`update subtypes set ${sql(subtype, ...subtypeKeys)} where id = ${subtypeId}`
+  const query = await sql`update subtypes set ${sql(subtype, ...subtypeKeys)} where id = ${subtypeId}`
   if (!query) return false
   return query
 }
 
 exports.deleteSubtype = async (subtypeId) => {
-  const query = sql`delete from subtypes where id = ${subtypeId}`
+  const query = await sql`delete from subtypes where id = ${subtypeId}`
   if (!query) return false
   return query
 }
