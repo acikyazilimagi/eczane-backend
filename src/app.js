@@ -3,6 +3,7 @@ const express = require('express')
 const cors = require('cors')
 require('express-async-errors')
 const { errorHandler } = require('./middleware/error')
+const { response } = require('./middleware/response')
 
 class App {
   #app
@@ -19,10 +20,9 @@ class App {
     this.#app.use(cors())
   }
 
-<<<<<<< HEAD
   routes() {
     const { routes } = require('./routes/index.js')
-    this.#app.use('/api', routes())
+    this.#app.use('/api', routes(), response)
     this.#app.use(errorHandler)
   }
 
@@ -32,6 +32,3 @@ class App {
 }
 
 exports.App = App
-=======
-module.exports = app
->>>>>>> f734da958fba8fbbdf09462e20ecd6002cae393e

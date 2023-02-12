@@ -1,7 +1,4 @@
 const router = require('express').Router()
-<<<<<<< HEAD
-const { getAllLocations, insertLocation, updateLocation, deleteLocation, getAllTypes, insertType, updateType, deleteType } = require('./db/')
-=======
 const {
   getAllLocations,
   insertLocation,
@@ -16,7 +13,6 @@ const {
   updateSubtype,
   deleteSubtype,
 } = require('./db/')
->>>>>>> f734da958fba8fbbdf09462e20ecd6002cae393e
 const { validateData } = require('./db/validation/')
 const types = require('../data/types.json')
 const subtypes = require('../data/subtypes.json')
@@ -86,16 +82,6 @@ router.post('/', async (req, res) => {
     workingHours: location.workingHours || '',
     additionalAddressDetails: location.additionalAddressDetails || '',
   }
-<<<<<<< HEAD
-  try{
-    validateData(location)
-  } catch (e){
-      return res.status(400).json({
-        ok: false,
-        message: e.message,
-        code: 400,
-      })
-=======
 
   try {
     validateData(locationData, locationValidationSchema)
@@ -105,7 +91,6 @@ router.post('/', async (req, res) => {
       message: e.message,
       code: 400,
     })
->>>>>>> f734da958fba8fbbdf09462e20ecd6002cae393e
   }
 
   try {

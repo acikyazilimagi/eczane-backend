@@ -8,29 +8,6 @@ exports.getAllLocations = async () => {
 }
 
 exports.insertLocation = async (locations) => {
-<<<<<<< HEAD
-  const locationsMapped = locations.map((l) => ({
-    ...l,
-    workingHours: l.workingHours || '',
-    additionalAddressDetails: l.addressDetails,
-  }))
-
-  const query = await sql`insert into locations ${sql(
-    locationsMapped,
-    'name',
-    'phone',
-    'address',
-    'additionalAddressDetails',
-    'workingHours',
-    'latitude',
-    'longitude',
-    'cityId',
-    'districtId',
-    'typeId',
-    'code',
-    'subTypeId',
-  )}`
-=======
   const locationsMapped = {
     ...locations,
     workingHours: locations.workingHours || '',
@@ -45,7 +22,6 @@ exports.insertLocation = async (locations) => {
 
   const query = await sql`insert into locations ${sql(locationsMapped, ...keys)}`
 
->>>>>>> f734da958fba8fbbdf09462e20ecd6002cae393e
   if (!query) return false
   return query
 }
@@ -93,8 +69,6 @@ exports.deleteType = async (typeId) => {
   if (!query) return false
   return query
 }
-<<<<<<< HEAD
-=======
 
 exports.getAllSubtypes = async () => {
   const query = sql`select * from subtypes`
@@ -121,4 +95,3 @@ exports.deleteSubtype = async (subtypeId) => {
   if (!query) return false
   return query
 }
->>>>>>> f734da958fba8fbbdf09462e20ecd6002cae393e

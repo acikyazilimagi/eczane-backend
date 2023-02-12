@@ -1,4 +1,4 @@
-exports.validateRequest = (req, schema) => {
+exports.validateRequest = (req, schema, next) => {
   const { body, params, query } = req
 
   if (body) {
@@ -10,6 +10,8 @@ exports.validateRequest = (req, schema) => {
   if (query) {
     validateData(query, schema.query)
   }
+
+  next()
 }
 
 const validateData = (data, schema) => {

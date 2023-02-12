@@ -1,13 +1,13 @@
 const { auth } = require('../middleware/auth')
 const CONTROLLER = require('../controllers/location')
 const VALIDATION = require('../middleware/validation/schemas/location')
-const { validate } = require('../middleware/validation/validate')
+const { validateRequest } = require('../middleware/validation/validate')
 
 module.exports = {
   getAllLocations: {
     method: 'get',
     path: '/locations',
-    middleware: [(req, res, next) => validate(req, VALIDATION.getAllLocations, next)],
+    middleware: [(req, res, next) => validateRequest(req, VALIDATION.getAllLocations, next)],
     handler: (req, res, next) => CONTROLLER.getAllLocations(req, res, next),
   },
 
