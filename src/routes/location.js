@@ -7,7 +7,7 @@ module.exports = {
   getAllLocations: {
     method: 'get',
     path: '/locations',
-    middleware: [(req, res, next) => validateRequest(req, VALIDATION.getAllLocations, next)],
+    middleware: [],
     handler: (req, res, next) => CONTROLLER.getAllLocations(req, res, next),
   },
 
