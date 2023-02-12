@@ -25,7 +25,7 @@ module.exports = {
 
   deleteType: {
     method: 'delete',
-    path: '/typ/:id',
+    path: '/type/:id',
     middleware: [auth],
     handler: (req, res, next) => CONTROLLER.deleteType(req, res, next),
   },
