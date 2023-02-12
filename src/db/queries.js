@@ -8,6 +8,7 @@ exports.getAllLocations = async () => {
 }
 
 exports.insertLocation = async (locations) => {
+<<<<<<< HEAD
   const locationsMapped = locations.map((l) => ({
     ...l,
     workingHours: l.workingHours || '',
@@ -29,6 +30,22 @@ exports.insertLocation = async (locations) => {
     'code',
     'subTypeId',
   )}`
+=======
+  const locationsMapped = {
+    ...locations,
+    workingHours: locations.workingHours || '',
+    additionalAddressDetails: locations.addressDetails || '',
+  }
+  delete locationsMapped.addressDetails
+
+  const keys = Object.keys(locationsMapped)
+  if (!keys.length) {
+    return false
+  }
+
+  const query = await sql`insert into locations ${sql(locationsMapped, ...keys)}`
+
+>>>>>>> f734da958fba8fbbdf09462e20ecd6002cae393e
   if (!query) return false
   return query
 }
@@ -76,3 +93,32 @@ exports.deleteType = async (typeId) => {
   if (!query) return false
   return query
 }
+<<<<<<< HEAD
+=======
+
+exports.getAllSubtypes = async () => {
+  const query = sql`select * from subtypes`
+  if (!query) return false
+  return query
+}
+
+exports.insertSubtype = async (subtype) => {
+  const query = sql`insert into subtypes ${sql(subtype, 'typeId', 'name')}`
+  if (!query) return false
+  return query
+}
+
+exports.updateSubtype = async (subtypeId, subtype) => {
+  const subtypeKeys = Object.keys(type)
+
+  const query = sql`update subtypes set ${sql(subtype, ...subtypeKeys)} where id = ${subtypeId}`
+  if (!query) return false
+  return query
+}
+
+exports.deleteSubtype = async (subtypeId) => {
+  const query = sql`delete from subtypes where id = ${subtypeId}`
+  if (!query) return false
+  return query
+}
+>>>>>>> f734da958fba8fbbdf09462e20ecd6002cae393e
