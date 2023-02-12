@@ -22,7 +22,6 @@ module.exports = {
   updateLocation,
   deleteLocation,
   getAllTypes,
-  getAllTypes,
   insertType,
   updateType,
   deleteType,
