@@ -7,6 +7,13 @@ exports.getAllLocations = async () => {
   return query
 }
 
+exports.getAllLocationsAdmin = async () => {
+  const query = await sql`select * from locations`
+  if (!query) return false
+  return query
+}
+
+
 exports.insertLocation = async (locations) => {
   const locationsMapped = {
     ...locations,

@@ -1,8 +1,13 @@
-const { getAllLocations, insertLocation, updateLocation, deleteLocation } = require('../db')
+const { getAllLocations, getAllLocationsAdmin, insertLocation, updateLocation, deleteLocation } = require('../db')
 
 module.exports = {
   getAllLocations: async (req, res, next) => {
     res.data = await getAllLocations()
+    next()
+  },
+
+  getAllLocationsAdmin: async (req, res, next) => {
+    res.data = await getAllLocationsAdmin()
     next()
   },
 
