@@ -1,6 +1,6 @@
-module.exports = function (req, res, next) {
+exports.auth = (req, res, next) => {
   if (req.headers['authorization'] !== process.env.SEED_KEY) {
-    return res.unauthorized()
+    throw new Error('Unauthorized')
   }
 
   next()
