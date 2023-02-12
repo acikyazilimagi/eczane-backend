@@ -17,7 +17,7 @@ const { validateData } = require('./db/validation/')
 const types = require('../data/types.json')
 const subtypes = require('../data/subtypes.json')
 const cityData = require('../data/city-data.json')
-const { locationValidationSchema, typeValidationShema, subTypeValidationShema } = require('./db/validation/validationSchemas')
+const { locationValidationSchema, typeValidationSchema, subTypeValidationSchema } = require('./db/validation/validationSchemas')
 
 // get all locations
 router.get('/', async (req, res) => {
@@ -167,7 +167,7 @@ router.post('/types', async (req, res) => {
   const { type } = req.body
 
   try {
-    validateData(type, typeValidationShema)
+    validateData(type, typeValidationSchema)
   } catch (e) {
     return res.status(400).json({
       ok: false,
@@ -254,7 +254,7 @@ router.post('/subtypes', async (req, res) => {
   const { subType } = req.body
 
   try {
-    validateData(subType, subTypeValidationShema)
+    validateData(subType, subTypeValidationSchema)
   } catch (e) {
     return res.status(400).json({
       ok: false,
