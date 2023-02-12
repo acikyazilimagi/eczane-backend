@@ -8,24 +8,17 @@ const cityData = require('../data/city-data.json')
 // get all locations
 router.get('/', async (req, res) => {
   const typeParam = req.query.type
-  if (!typeParam) {
-    return res
-      .json({
-        ok: false,
-        message: 'Tip parametresi eksik',
-        code: 400,
-      })
-      .status(400)
-  }
+  
   let locations = await getAllLocations()
-  if (!locations) {
 
+  if (!locations) {
     return res.json({ ok: false, msg: 'Bir hata oluştu', code: 500 }).status(500);
   }
 
-  const type = types.find((t) => t.name == typeParam)
-  locations = locations.filter((l) => l.typeId == type.id)
-
+  if (typeParam) {
+    const type = types.find((t) => t.name == typeParam)
+    locations = locations.filter((l) => l.typeId == type.id)
+  }
 
   return res.json({
     ok: true,
@@ -71,13 +64,13 @@ router.post('/', async (req, res) => {
       })
   }
 
-  location = {
+  const locationData = {
     ...location,
     workingHours: location.workingHours || '',
     additionalAddressDetails: location.additionalAddressDetails || '',
   }
   try{
-    validateData(location)
+    validateData(locationData)
   } catch (e){
       return res.status(400).json({
         ok: false,
@@ -87,9 +80,11 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    await insertLocation([location])
+    console.log(locationData)
+    await insertLocation(locationData)
     return res.json({ ok: true })
   } catch (e) {
+    console.log(e)
     return res.status(500).json({ ok: false, msg: 'Bir hata oluştu', code: 500 })
   }
 })
@@ -160,7 +155,7 @@ router.post('/types', async (req, res) => {
       return res.status(401).json({ ok: false, msg: 'Yetkiniz yok', code: 401 })
     }
 
-    const { type } = req.body
+    const type = req.body
     if (!type) {
       return res
         .json({

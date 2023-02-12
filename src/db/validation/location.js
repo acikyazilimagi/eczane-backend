@@ -4,7 +4,7 @@ const schema = {
       required: true
     },
     phone: {
-      type: 'any',
+      type: 'any'
     },
     address: {
       type: 'string',
@@ -14,15 +14,14 @@ const schema = {
       type: 'string'
     },
     workingHours: {
-      type: 'string',
-      required: true
+      type: 'string'
     },
     latitude: {
-      type: 'number',
+      type: 'any',
       required: true
     },
     longitude: {
-      type: 'number',
+      type: 'any',
       required: true
     },
     cityId: {
@@ -38,8 +37,7 @@ const schema = {
       required: true
     },
     code: {
-      type: 'string',
-      required: true
+      type: 'string'
     },
     subTypeId: {
       type: 'number',
@@ -56,7 +54,7 @@ const schema = {
         throw new Error(`${field} alanının girilmesi zorunludur.`);
       }
   
-      if (value && typeof value !== fieldDef.type) {
+      if (value && (typeof value !== fieldDef.type && fieldDef.type !== 'any')) {
         throw new Error(`${field} alan tipi ${fieldDef.type} olmak zorunda.`);
       }
     }

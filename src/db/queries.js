@@ -8,28 +8,23 @@ exports.getAllLocations = async () => {
 }
 
 exports.insertLocation = async (locations) => {
-  const locationsMapped = locations.map((l) => ({
-    ...l,
-    workingHours: l.workingHours || '',
-    additionalAddressDetails: l.addressDetails,
-  }))
+    const locationsMapped = {
+      ...locations,
+      workingHours: locations.workingHours || '',
+      additionalAddressDetails: locations.addressDetails || '',
+    }
+    delete locationsMapped.addressDetails
 
-  
+    const keys = Object.keys(locationsMapped)
+    if (!keys.length) {
+      return false
+    }
+
     const query = await sql`insert into locations ${sql(
       locationsMapped,
-      'name',
-      'phone',
-      'address',
-      'additionalAddressDetails',
-      'workingHours',
-      'latitude',
-      'longitude',
-      'cityId',
-      'districtId',
-      'typeId',
-      'code',
-      'subTypeId',
+      ...keys
     )}`
+
     if (!query) return false;
     return query;
    
