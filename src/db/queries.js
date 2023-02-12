@@ -12,7 +12,6 @@ exports.getAllLocationsAdmin = async () => {
   return query || false
 }
 
-
 exports.insertLocation = async (locations) => {
   const locationsMapped = {
     ...locations,
