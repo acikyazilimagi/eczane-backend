@@ -63,4 +63,5 @@ const subTypeValidationSchema = {
   },
 }
 
-module.exports = { locationValidationSchema, typeValidationSchema, subTypeValidationSchema }
+
+module.exports= { locationValidationSchema, typeValidationShema, subTypeValidationShema }
