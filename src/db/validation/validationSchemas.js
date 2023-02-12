@@ -52,4 +52,15 @@ const typeValidationShema = {
   },
 }
 
-export { locationValidationSchema, typeValidationShema }
+const subTypeValidationShema = {
+  typeId: {
+    type: 'number',
+    required: true,
+  },
+  name: {
+    type: 'string',
+    required: true,
+  },
+}
+
+export { locationValidationSchema, typeValidationShema, subTypeValidationShema }
