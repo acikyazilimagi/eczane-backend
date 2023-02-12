@@ -2,7 +2,7 @@ const { query } = require('express')
 const { sql } = require('./connect')
 
 exports.getAllLocations = async () => {
-  const query = await sql`select * from locations where isValidated`
+  const query = await sql`select * from locations where "isValidated"=true`
   if (!query) return false
   return query
 }
@@ -26,7 +26,7 @@ exports.insertLocation = async (locations) => {
   return query
 }
 exports.validateLocation = async (locationId) => {
-  
+
 
   try {
     return await sql`update locations set isValidated = true
