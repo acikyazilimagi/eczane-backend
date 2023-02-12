@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const { getAllLocations, insertLocation, updateLocation, deleteLocation, getAllTypes, insertType, updateType, deleteType } = require('./db/')
+const { validateData } = require('./db/validation/')
 const types = require('../data/types.json')
 const subtypes = require('../data/subtypes.json')
 const cityData = require('../data/city-data.json')
@@ -75,16 +76,14 @@ router.post('/', async (req, res) => {
     workingHours: location.workingHours || '',
     additionalAddressDetails: location.additionalAddressDetails || '',
   }
-
-  const keys = Object.keys(location)
-  const requiredKeys = ['name', 'code', 'latitude', 'longitude', 'phone', 'districtId', 'cityId', 'address', 'additionalAddressDetails', 'typeId', 'subTypeId']
-  const missingKeys = requiredKeys.filter((k) => !keys.includes(k))
-  if (missingKeys.length) {
-    return res.status(400).json({
-      ok: false,
-      message: `Eksik anahtarlar: ${missingKeys.join(', ')}`,
-      code: 400,
-    })
+  try{
+    validateData(location)
+  } catch (e){
+      return res.status(400).json({
+        ok: false,
+        message: e.message,
+        code: 400,
+      })
   }
 
   try {
