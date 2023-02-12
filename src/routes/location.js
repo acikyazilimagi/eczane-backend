@@ -13,7 +13,7 @@ module.exports = {
 
   getAllLocationsAdmin: {
     method: 'get',
-    path: '/locations/damin',
+    path: '/locations/admin',
     middleware: [],
     handler: (req, res, next) => CONTROLLER.getAllLocationsAdmin(req, res, next),
   },

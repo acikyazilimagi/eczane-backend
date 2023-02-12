@@ -1,7 +1,9 @@
+const { getAllSubtypes } = require('../db')
+
 module.exports = {
-  getAllLocations: async (req, res, next) => {
-    res.data = 'mock'
-    next()
+  getAllSubtypes: async (req, res, next) => {
+    const subtypes = await getAllSubtypes()
+    return res.status(200).json({ data: subtypes })
   },
 
   postLocation: async (req, res, next) => {
