@@ -81,14 +81,14 @@ exports.updateType = async (typeId, type) => {
 
 exports.deleteType = async (typeId) => {
   const query = await sql`delete from types where id = ${typeId}`
-  if (!query) return false
-  return query
+  
+  return query || false
 }
 
 exports.getAllSubtypes = async () => {
   const query = await sql`select * from subtypes`
-  if (!query) return false
-  return query
+  
+  return query || false
 }
 
 exports.insertSubtype = async (subtype) => {
