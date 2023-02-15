@@ -4,16 +4,22 @@ const {
   insertLocation,
   updateLocation,
   deleteLocation,
+  validateLocation,
+} = require('./queries/location')
+
+const {
   getAllTypes,
   insertType,
   updateType,
-  deleteType,
+  deleteType
+} = require('./queries/type')
+
+const {
   getAllSubtypes,
   insertSubtype,
   updateSubtype,
-  deleteSubtype,
-  validateLocation,
-} = require('./queries')
+  deleteSubtype
+} = require('./queries/subtype')
 
 module.exports = {
   getAllLocations,
