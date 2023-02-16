@@ -26,9 +26,8 @@ class App {
     this.#app.use(errorHandler)
   }
 
-  
   listen() {
-    const port = process.env.PORT || 3000;
+    const port = process.env.ECZ_PORT || process.env.PORT || 3000;
     this.#app.listen(this.port, () => console.log(`App started on port: ${port}`))
   }
 }
