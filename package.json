@@ -30,6 +30,7 @@
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "jest": "^29.4.2",
+    "nodemon": "^2.0.20",
     "superagent": "^8.0.9",
     "supertest": "^6.3.3"
   }
