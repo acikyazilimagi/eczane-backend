@@ -22,3 +22,12 @@ describe('cityWithDistricts API', () => {
     expect(body.data[0].districts.length).toBe(15)
   })
 });
+
+describe('types API', () => {
+  it('should return all types', async () => {
+    const { body } = await request(server).get(`${API_END_POINT}/types`) 
+
+    expect(body.data[0].id).toBe(1)
+    expect(body.data[0].name).toBe("Hastane")
+  })
+});
