@@ -30,6 +30,13 @@ exports.up = (pgm) => {
     },
   })
 
+  // Read JSON file in data folder
+  const types = require('../data/types.json')
+  // Insert the types into types table
+  types.forEach((type) => {
+    pgm.sql(`INSERT INTO types (name) VALUES ('${type.name}')`)
+  });
+
   pgm.createTable('subtypes', {
     id: 'id',
     typeId: { type: 'integer', references: 'types', notNull: true },
