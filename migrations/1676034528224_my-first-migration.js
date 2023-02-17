@@ -30,13 +30,6 @@ exports.up = (pgm) => {
     },
   })
 
-  // Read JSON file in data folder
-  const types = require('../data/types.json')
-  // Insert the types into types table
-  types.forEach((type) => {
-    pgm.sql(`INSERT INTO types (name) VALUES ('${type.name}')`)
-  });
-
   pgm.createTable('subtypes', {
     id: 'id',
     typeId: { type: 'integer', references: 'types', notNull: true },
@@ -68,4 +61,17 @@ exports.up = (pgm) => {
       default: pgm.func('current_timestamp'),
     },
   })
+  
+  // Seed the db
+
+  const types = require('../data/types.json')
+  for (const type of types) {
+    pgm.sql(`INSERT INTO types VALUES (${type.id}, '${type.name}')`)
+  }
+
+  const subtypes = require('../data/subtypes.json')
+  for (const subtype of subtypes) {
+    pgm.sql(`INSERT INTO subtypes VALUES (${subtype.id}, ${subtype.typeId}, '${subtype.name}')`)
+  }
+
 }
