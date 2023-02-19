@@ -81,12 +81,12 @@ describe('locations API', () => {
 
   it('should list only validated locations', async () => {
     const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`)
-    .send(location)
+      .send(location)
 
     expect(statusCode).toBe(201)
 
     const all = await request(server).get(`${API_END_POINT}/locations`)
-    
+
     // Check all.data has newly created location
     expect(all.statusCode).toBe(200)
     expect(all.body.data.length).toBeGreaterThan(0)
@@ -99,13 +99,12 @@ describe('locations API', () => {
     var unvalidatedLocation = location
     unvalidatedLocation.isValidated = false
     const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`)
-    .send(unvalidatedLocation)
+      .send(unvalidatedLocation)
 
     expect(statusCode).toBe(201)
 
     const all = await request(server).get(`${API_END_POINT}/locations`)
-    
-    // Check all.data has newly created location
+
     expect(all.statusCode).toBe(200)
     expect(all.body.data.length).toBeGreaterThan(0)
     expect(all.body.data.some(loc => loc.id === body.data.id)).toBe(false)
@@ -116,13 +115,12 @@ describe('locations API', () => {
     var unvalidatedLocation = location
     unvalidatedLocation.isValidated = false
     const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`)
-    .send(unvalidatedLocation)
+      .send(unvalidatedLocation)
 
     expect(statusCode).toBe(201)
 
     const all = await request(server).get(`${API_END_POINT}/locations/admin`)
-    
-    // Check all.data has newly created location
+
     expect(all.statusCode).toBe(200)
     expect(all.body.data.length).toBeGreaterThan(0)
     expect(all.body.data.some(loc => loc.id === body.data.id)).toBe(true)
@@ -155,7 +153,6 @@ describe('locations API', () => {
       .send(updatedLocation)
 
     expect(updatedRecord.statusCode).toBe(200)
-  
 
     const updatedLocationFromDb = await request(server).get(`${API_END_POINT}/location/${body.data.id}`)
 
@@ -163,5 +160,16 @@ describe('locations API', () => {
     expect(updatedLocationFromDb.body.data.name).toBe(updatedLocation.name)
 
 
+  });
+  it('should not allow to SQL injection', async () => {
+    const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`)
+      .send(location)
+
+    expect(statusCode).toBe(201)
+    expect(body.data.id).toBeGreaterThan(0)
+
+    const injectionRequest = await request(server).delete(`${API_END_POINT}/location/${body.data.id}; DROP TABLE locations;`)
+
+    expect(injectionRequest.statusCode).toBe(500)
   });
 });
