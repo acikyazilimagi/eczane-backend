@@ -1,10 +1,15 @@
-const { query } = require('express')
+
 const { sql } = require('./connect')
 
 exports.getAllLocations = async () => {
   const query = await sql`select * from locations where "isValidated"=true`
 
   return query || false
+}
+
+exports.getLocation = async (id) => {
+  const query = await sql`select * from locations where id = ${id} AND "isValidated" = true`
+  return query[0] || false
 }
 
 exports.getAllLocationsAdmin = async () => {

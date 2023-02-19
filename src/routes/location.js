@@ -38,4 +38,11 @@ module.exports = {
     middleware: [auth],
     handler: (req, res, next) => CONTROLLER.deleteLocation(req, res, next),
   },
+
+  getLocation: {
+    method: 'get',
+    path: '/location/:id',
+    middleware: [auth],
+    handler: (req, res, next) => CONTROLLER.getLocation(req, res, next),
+  },
 }
