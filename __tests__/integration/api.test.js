@@ -129,4 +129,39 @@ describe('locations API', () => {
 
   });
 
+  it('should be able to update a location', async () => {
+    const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`)
+      .send(location)
+
+    expect(statusCode).toBe(201)
+
+    const updatedLocation = {
+      name: 'Updated Location',
+      typeId: 2,
+      subTypeId: 2,
+      cityId: 2,
+      districtId: 2,
+      latitude: 2.0,
+      longitude: 2.0,
+      phone: '1234567890',
+      address: '123 Main St',
+      additionalAddressDetails: '',
+      workingHours: '',
+      code: 'LOC2',
+      isValidated: true,
+    }
+
+    const updatedRecord = await request(server).put(`${API_END_POINT}/location/${body.data.id}`)
+      .send(updatedLocation)
+
+    expect(updatedRecord.statusCode).toBe(200)
+  
+
+    const updatedLocationFromDb = await request(server).get(`${API_END_POINT}/location/${body.data.id}`)
+
+    expect(updatedLocationFromDb.statusCode).toBe(200)
+    expect(updatedLocationFromDb.body.data.name).toBe(updatedLocation.name)
+
+
+  });
 });
