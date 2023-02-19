@@ -13,7 +13,10 @@ module.exports = {
 
   postLocation: async (req, res, next) => {
     const location = req.body
-    res.data = await insertLocation(location)
+    const data = await insertLocation(location)
+    const failed = data === false
+    res.data = data
+    res.statusCode = failed ? 500 : 201
     next()
   },
 
