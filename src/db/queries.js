@@ -95,3 +95,7 @@ exports.updateSubtype = async (subtypeId, subtype) => {
 exports.deleteSubtype = async (subtypeId) => {
   return await sql`delete from subtypes where id = ${subtypeId}`
 }
+
+exports.deleteAllLocations = async () => {
+  return await sql`delete from locations`
+};

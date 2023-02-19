@@ -1,4 +1,5 @@
 const request = require('supertest');
+const { deleteAllLocations } = require('../../src/db/queries');
 const app = require('../../src/app');
 const server = app.express;
 
@@ -60,6 +61,13 @@ describe('locations API', () => {
     isValidated: true,
   }
 
+  beforeAll(async () => {
+    await deleteAllLocations()
+  });
+
+  afterAll(async () => {
+    await deleteAllLocations()
+  });
 
   it('should be able to insert a location', async () => {
     const { statusCode } = await request(server).post(`${API_END_POINT}/location`)

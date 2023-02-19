@@ -33,7 +33,6 @@ module.exports = {
       res.data = await deleteLocation(id)
       next()
     } catch(err) {
-      console.log(err)
       if (err.status === 404) {
         res.statusCode = 404
       }
