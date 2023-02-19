@@ -55,6 +55,7 @@ exports.up = (pgm) => {
     districtId: { type: 'integer', notNull: true, references: 'districts' },
     typeId: { type: 'integer', notNull: true, references: 'types' },
     subTypeId: { type: 'integer', notNull: true, references: 'subtypes' },
+    isValidated: {type: 'boolean', notNull: true, default: false},
     createdAt: {
       type: 'timestamp',
       notNull: true,
