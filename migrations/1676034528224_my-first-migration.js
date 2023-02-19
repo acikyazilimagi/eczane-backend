@@ -74,4 +74,12 @@ exports.up = (pgm) => {
     pgm.sql(`INSERT INTO subtypes VALUES (${subtype.id}, ${subtype.typeId}, '${subtype.name}')`)
   }
 
+  const cities = require('../data/cities-with-districts.json')
+  for (const city of cities) {
+    pgm.sql(`INSERT INTO cities VALUES (${city.id}, '${city.key}')`)
+    for (const district of city.districts) {
+      pgm.sql(`INSERT INTO districts VALUES (${district.id}, '${district.key}', ${city.id})`)
+    }
+  }
+
 }
