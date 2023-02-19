@@ -25,7 +25,7 @@ describe('cityWithDistricts API', () => {
 
 describe('types API', () => {
   it('should return all types', async () => {
-    const { body } = await request(server).get(`${API_END_POINT}/types`) 
+    const { body } = await request(server).get(`${API_END_POINT}/types`)
 
     expect(body.data[0].id).toBe(1)
     expect(body.data[0].name).toBe("Hastane")
@@ -34,7 +34,7 @@ describe('types API', () => {
 
 describe('subtypes API', () => {
   it('should return all types', async () => {
-    const { body } = await request(server).get(`${API_END_POINT}/subtypes`) 
+    const { body } = await request(server).get(`${API_END_POINT}/subtypes`)
 
     expect(body.data[0].id).toBe(1)
     expect(body.data[0].typeId).toBe(1)
@@ -64,6 +64,17 @@ describe('locations API', () => {
     const { statusCode } = await request(server).post(`${API_END_POINT}/location`)
       .send(location)
 
-      expect(statusCode).toBe(201)
+    expect(statusCode).toBe(201)
+  });
+
+  it('should be able to delete a location', async () => {
+    const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`)
+      .send(location)
+
+    expect(statusCode).toBe(201)
+
+    const deletedRecord = await request(server).delete(`${API_END_POINT}/location/${body.data.id}`)
+
+    expect(deletedRecord.statusCode).toBe(200)
   });
 });
