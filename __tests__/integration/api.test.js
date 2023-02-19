@@ -57,6 +57,7 @@ describe('locations API', () => {
     additionalAddressDetails: '',
     workingHours: '',
     code: 'LOC2',
+    isValidated: true,
   }
 
 
@@ -77,4 +78,55 @@ describe('locations API', () => {
 
     expect(deletedRecord.statusCode).toBe(200)
   });
+
+  it('should list only validated locations', async () => {
+    const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`)
+    .send(location)
+
+    expect(statusCode).toBe(201)
+
+    const all = await request(server).get(`${API_END_POINT}/locations`)
+    
+    // Check all.data has newly created location
+    expect(all.statusCode).toBe(200)
+    expect(all.body.data.length).toBeGreaterThan(0)
+    expect(all.body.data.some(loc => loc.id === body.data.id)).toBe(true)
+
+  });
+
+
+  it('should NOT list unvalidated locations', async () => {
+    var unvalidatedLocation = location
+    unvalidatedLocation.isValidated = false
+    const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`)
+    .send(unvalidatedLocation)
+
+    expect(statusCode).toBe(201)
+
+    const all = await request(server).get(`${API_END_POINT}/locations`)
+    
+    // Check all.data has newly created location
+    expect(all.statusCode).toBe(200)
+    expect(all.body.data.length).toBeGreaterThan(0)
+    expect(all.body.data.some(loc => loc.id === body.data.id)).toBe(false)
+
+  });
+
+  it('Admin should be able to list unvalidated locations', async () => {
+    var unvalidatedLocation = location
+    unvalidatedLocation.isValidated = false
+    const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`)
+    .send(unvalidatedLocation)
+
+    expect(statusCode).toBe(201)
+
+    const all = await request(server).get(`${API_END_POINT}/locations/admin`)
+    
+    // Check all.data has newly created location
+    expect(all.statusCode).toBe(200)
+    expect(all.body.data.length).toBeGreaterThan(0)
+    expect(all.body.data.some(loc => loc.id === body.data.id)).toBe(true)
+
+  });
+
 });
