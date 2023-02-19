@@ -41,3 +41,29 @@ describe('subtypes API', () => {
     expect(body.data[0].name).toBe("Acil")
   })
 });
+
+describe('locations API', () => {
+
+  const location = {
+    name: 'Location 2',
+    typeId: 2,
+    subTypeId: 2,
+    cityId: 2,
+    districtId: 2,
+    latitude: 2.0,
+    longitude: 2.0,
+    phone: '1234567890',
+    address: '123 Main St',
+    additionalAddressDetails: '',
+    workingHours: '',
+    code: 'LOC2',
+  }
+
+
+  it('should be able to insert a location', async () => {
+    const { statusCode } = await request(server).post(`${API_END_POINT}/location`)
+      .send(location)
+
+      expect(statusCode).toBe(201)
+  });
+});
