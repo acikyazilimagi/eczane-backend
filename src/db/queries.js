@@ -25,8 +25,8 @@ exports.insertLocation = async (locations) => {
     return false
   }
 
-  const query = await sql`insert into locations ${sql(locationsMapped, ...keys)}`
-  return query || false
+  const query = await sql`insert into locations ${sql(locationsMapped, ...keys)} returning *`
+  return query[0] || false
 }
 exports.validateLocation = async (locationId) => {
 
