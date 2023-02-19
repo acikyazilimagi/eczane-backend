@@ -11,11 +11,17 @@ if (process.env.NODE_ENV === 'production') {
     password: process.env.PSQL_PASSWORD,
     username: process.env.PSQL_USER,
   })
+} else if (process.env.NODE_ENV === 'test') {
+  sql = postgres({
+    /* options */
+    host: "localhost",
+    port: "5455",
+    database: "eczane-backend-test",
+    password: "postgres",
+    username: "postgres"
+  })
 }
 else {
-  // TODO: Handle TEST env here if needed for testing
-  // At the moment it will be only for DEV
-  
   sql = postgres({
     /* options */
     host: process.env.ECZ_DB_HOST,
@@ -23,7 +29,7 @@ else {
     database: process.env.ECZ_DB_NAME,
     password: process.env.ECZ_DB_PASSWORD,
     username: process.env.ECZ_DB_USER,
-  })
+  })  
 }
 
 exports.sql = sql

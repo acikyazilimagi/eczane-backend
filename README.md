@@ -21,6 +21,10 @@ npm install
 3. Run a PostgreSQL server on your machine, preferably with Docker.
 ```bash
 docker run -p 127.0.0.1:5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=eczane-backend-dev -e POSTGRES_USER=postgres -e POSTGRES_ROOT_PASSWORD=postgres -d postgres
+
+# Create another instance for test purpose if you want
+docker run -p 127.0.0.1:5455:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=eczane-backend-test -e POSTGRES_USER=postgres -e POSTGRES_ROOT_PASSWORD=postgres -d postgres
+
 ```
 
 4. Create a `.env` file in the root directory of the project and fill it with the following variables.
@@ -45,14 +49,12 @@ source .env
 
 6. Run the migrations.
 
-Please note that `pg` library's port cannot be changed at the moment, even you set via `PGPORT` it will still use the default port `5432`. 
-
 ```bash
-PGUSER=$ECZ_DB_USER \
-  PGHOST=$ECZ_DB_HOST \
-  PGPASSWORD=$ECZ_DB_PASSWORD \
-  PGDATABASE=$ECZ_DB_NAME \
-  npm run migrate up
+#  Run the migration on dev / prod database
+DATABASE_URL=postgres://$ECZ_DB_USER:$ECZ_DB_PASSWORD@$ECZ_DB_HOST:$ECZ_DB_PORT/$ECZ_DB_NAME npm run migrate up
+
+#  Run the migration on test database
+DATABASE_URL=postgres://postgres:postgres@localhost:5455/eczane-backend-test npm run migrate up
 ```
 
 7. Run the server.
