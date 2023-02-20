@@ -29,15 +29,12 @@ exports.insertLocation = async (locations) => {
   return query || false
 }
 exports.validateLocation = async (locationId) => {
-
-
   try {
     return await sql`update locations set isValidated = true
     where id = ${locationId}`
   } catch (e) {
     console.log(e)
     return null
-
   }
 }
 
@@ -51,6 +48,15 @@ exports.updateLocation = async (locationId, location) => {
     where id = ${locationId}`
 
   return query || false
+}
+
+exports.disableHatay = async (locationId) => {
+  try {
+    return await sql`update locations set isValidated = false where cityId = 31`
+  } catch (e) {
+    console.log(e)
+    return null
+  }
 }
 
 exports.deleteLocation = async (locationId) => {
