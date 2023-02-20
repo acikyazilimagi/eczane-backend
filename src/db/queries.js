@@ -29,15 +29,12 @@ exports.insertLocation = async (locations) => {
   return query || false
 }
 exports.validateLocation = async (locationId) => {
-
-
   try {
     return await sql`update locations set isValidated = true
     where id = ${locationId}`
   } catch (e) {
     console.log(e)
     return null
-
   }
 }
 
@@ -107,6 +104,12 @@ exports.updateSubtype = async (subtypeId, subtype) => {
 
 exports.deleteSubtype = async (subtypeId) => {
   const query = await sql`delete from subtypes where id = ${subtypeId}`
+
+  return query || false
+}
+
+exports.disableLocation = async (cityId) => {
+  const query = await sql`update locations set isValidated = false where id = ${cityId}`
 
   return query || false
 }

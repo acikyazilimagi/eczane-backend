@@ -1,4 +1,4 @@
-const { getAllLocations, getAllLocationsAdmin, insertLocation, updateLocation, deleteLocation } = require('../db')
+const { getAllLocations, getAllLocationsAdmin, insertLocation, updateLocation, deleteLocation, disableLocation } = require('../db')
 
 module.exports = {
   getAllLocations: async (req, res, next) => {
@@ -27,6 +27,12 @@ module.exports = {
   deleteLocation: async (req, res, next) => {
     const { id } = req.params
     res.data = await deleteLocation(id)
+    next()
+  },
+
+  disableLocation: async (req, res, next) => {
+    const { id } = req.params
+    res.data = await disableLocation(id)
     next()
   },
 }

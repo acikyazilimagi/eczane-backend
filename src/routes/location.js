@@ -38,4 +38,11 @@ module.exports = {
     middleware: [auth],
     handler: (req, res, next) => CONTROLLER.deleteLocation(req, res, next),
   },
+
+  disableHatay: {
+    method: 'put',
+    path: '/locations/disable/:id',
+    middleware: [auth],
+    handler: (req, res, next) => CONTROLLER.disableLocation(req, res, next),
+  },
 }
