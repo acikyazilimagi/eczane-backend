@@ -109,7 +109,7 @@ exports.deleteSubtype = async (subtypeId) => {
 }
 
 exports.disableLocation = async (cityId) => {
-  const query = await sql`update locations set ${sql({ isValidated: false }, 'isValidated')} where cityId = ${cityId}`
+  const query = await sql`update locations set is_validated = false where city_id = ${cityId}`
 
   return query || false
 }
