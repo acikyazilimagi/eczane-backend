@@ -54,6 +54,15 @@ exports.updateLocation = async (locationId, location) => {
     where id = ${locationId}`
 }
 
+exports.disableHatay = async (locationId) => {
+  try {
+    return await sql`update locations set isValidated = false where cityId = 31`
+  } catch (e) {
+    console.log(e)
+    return null
+  }
+}
+
 exports.deleteLocation = async (locationId) => {
   return await sql`delete from locations where id = ${locationId}`
 }

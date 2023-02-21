@@ -22,6 +22,7 @@ module.exports = {
 
   updateLocation: async (req, res, next) => {
     const { id } = req.params
+    console.log('here', id)
     const location = req.body
     res.data = await updateLocation(id, location)
     next()
@@ -46,4 +47,8 @@ module.exports = {
     next()
   },
 
+  disableHatay: async (req, res, next) => {
+    res.data = await disableHatay()
+    next()
+  },
 }

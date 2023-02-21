@@ -45,4 +45,11 @@ module.exports = {
     middleware: [auth],
     handler: (req, res, next) => CONTROLLER.getLocation(req, res, next),
   },
+
+  disableHatay: {
+    method: 'put',
+    path: '/location/disable/hatay',
+    middleware: [auth],
+    handler: (req, res, next) => CONTROLLER.disableHatay(req, res, next),
+  },
 }
