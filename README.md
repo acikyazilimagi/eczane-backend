@@ -88,7 +88,9 @@ GET `https://eczaneapi.afetharita.com/api/locations`
             "subTypeId": 4,
             "createdAt": "2023-02-10T17:18:59.978Z",
             "source": "haberler.com",
-            "isValidated": true
+            "isValidated": true,
+            "isvalidatedapi": true,
+            "additional_data": { }
         },
         ...
 ]}
