@@ -37,9 +37,9 @@ describe('subtypes API', () => {
   it('should return all types', async () => {
     const { body } = await request(server).get(`${API_END_POINT}/subtypes`)
 
-    expect(body.data[0].id).toBe(1)
+    expect(body.data[0].id).toBe(2)
     expect(body.data[0].typeId).toBe(1)
-    expect(body.data[0].name).toBe("Acil")
+    expect(body.data[0].name).toBe("Genel")
   })
 });
 
@@ -169,6 +169,27 @@ describe('locations API', () => {
 
 
   });
+
+  it('should allow additional JSON data to be added to a location', async () => {
+    const additional = {
+      ...location,
+      additional_data: {
+        foo: 'bar',
+        baz: 'qux',
+        list: [1, 2, 3],
+      }
+    }
+
+    const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`).send(additional)
+
+    expect(statusCode).toBe(201)
+    expect(body.data.id).toBeGreaterThan(0)
+    expect(body.data.additional_data.foo).toBe(additional.additional_data.foo)
+    expect(body.data.additional_data.baz).toBe(additional.additional_data.baz)
+    expect(body.data.additional_data.list).toEqual(additional.additional_data.list)
+
+  });
+
   it('should not allow to SQL injection', async () => {
     const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`)
       .send(location)
