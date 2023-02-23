@@ -2,6 +2,67 @@
 
 Kullanılabilir durumdaki sağlık birimlerinin datasını gönderen API.
 
+## Setup
+
+### Requirements
+Latest version of Node.js and PostgreSQL.
+
+### Installation
+
+1. Clone the repository.
+```bash
+git clone {YOUR_FORKED_REPOSITORY_URL}
+```
+2. Install dependencies.
+```bash
+npm install
+```
+
+3. Run a PostgreSQL server on your machine, preferably with Docker.
+```bash
+docker run -p 127.0.0.1:5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=eczane-backend-dev -e POSTGRES_USER=postgres -e POSTGRES_ROOT_PASSWORD=postgres -d postgres
+
+# Create another instance for test purpose if you want
+docker run -p 127.0.0.1:5455:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=eczane-backend-test -e POSTGRES_USER=postgres -e POSTGRES_ROOT_PASSWORD=postgres -d postgres
+
+```
+
+4. Create a `.env` file in the root directory of the project and fill it with the following variables.
+```bash
+
+# Database
+ECZ_DB_HOST=localhost
+ECZ_DB_PORT=5432
+ECZ_DB_USER=postgres
+ECZ_DB_PASSWORD=postgres
+ECZ_DB_NAME=eczane-backend-dev
+
+# Server
+ECZ_PORT=3000
+
+```
+
+5. Load the environment variables.
+```bash
+source .env
+```
+
+6. Run the migrations.
+
+```bash
+#  Run the migration on dev / prod database
+DATABASE_URL=postgres://$ECZ_DB_USER:$ECZ_DB_PASSWORD@$ECZ_DB_HOST:$ECZ_DB_PORT/$ECZ_DB_NAME npm run migrate up
+
+#  Run the migration on test database
+DATABASE_URL=postgres://postgres:postgres@localhost:5455/eczane-backend-test npm run migrate up
+```
+
+7. Run the server.
+```bash
+npm run dev
+```
+
+
 ## API
 
 ### Get All Locations

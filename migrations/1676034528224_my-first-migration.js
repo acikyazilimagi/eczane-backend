@@ -55,10 +55,32 @@ exports.up = (pgm) => {
     districtId: { type: 'integer', notNull: true, references: 'districts' },
     typeId: { type: 'integer', notNull: true, references: 'types' },
     subTypeId: { type: 'integer', notNull: true, references: 'subtypes' },
+    isValidated: {type: 'boolean', notNull: true, default: false},
     createdAt: {
       type: 'timestamp',
       notNull: true,
       default: pgm.func('current_timestamp'),
     },
   })
+  
+  // Seed the db
+
+  const types = require('../data/types.json')
+  for (const type of types) {
+    pgm.sql(`INSERT INTO types VALUES (${type.id}, '${type.name}')`)
+  }
+
+  const subtypes = require('../data/subtypes.json')
+  for (const subtype of subtypes) {
+    pgm.sql(`INSERT INTO subtypes VALUES (${subtype.id}, ${subtype.typeId}, '${subtype.name}')`)
+  }
+
+  const cities = require('../data/cities-with-districts.json')
+  for (const city of cities) {
+    pgm.sql(`INSERT INTO cities VALUES (${city.id}, '${city.key}')`)
+    for (const district of city.districts) {
+      pgm.sql(`INSERT INTO districts VALUES (${district.id}, '${district.key}', ${city.id})`)
+    }
+  }
+
 }

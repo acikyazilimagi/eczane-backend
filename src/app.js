@@ -6,29 +6,33 @@ const { errorHandler } = require('./middleware/error')
 const { response } = require('./middleware/response')
 
 class App {
-  #app
+
+  express
   #routes
 
   constructor() {
-    this.#app = express()
+    this.express = express()
     this.middlewares()
     this.routes()
   }
 
   middlewares() {
-    this.#app.use(express.json())
-    this.#app.use(cors())
+    this.express.use(express.json())
+    this.express.use(cors())
   }
 
   routes() {
     const { routes } = require('./routes/index.js')
-    this.#app.use('/api', routes(), response)
-    this.#app.use(errorHandler)
+    this.express.use('/api', routes(), response)
+    this.express.use(errorHandler)
   }
 
-  listen() {
-    this.#app.listen(process.env.PORT, () => console.log('App started'))
+  listen(port) {
+    this.port = port
+    this.express.listen(this.port, () => console.log(`App started on port: ${this.port}`))
   }
 }
 
-exports.App = App
+const app = new App();
+
+module.exports = app

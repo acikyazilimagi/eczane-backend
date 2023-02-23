@@ -1,4 +1,4 @@
-const cityData = require('../../data/city-data.json')
+const cityData = require('../../data/cities-with-districts.json')
 
 module.exports = {
   cityWithDistricts: {

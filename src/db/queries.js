@@ -1,4 +1,4 @@
-const { query } = require('express')
+
 const { sql } = require('./connect')
 
 exports.getAllLocations = async () => {
@@ -7,9 +7,21 @@ exports.getAllLocations = async () => {
   return query || false
 }
 
+exports.getLocation = async (id) => {
+  const query = await sql`select * from locations where id = ${id} AND "isValidated" = true`
+  const location = query[0]
+
+  if (!location) {
+    const error = new Error('Location not found')
+    error.status = 404
+    throw error
+  }
+
+  return location
+}
+
 exports.getAllLocationsAdmin = async () => {
-  const query = await sql`select * from locations`
-  return query || false
+  return await sql`select * from locations`
 }
 
 exports.insertLocation = async (locations) => {
@@ -25,29 +37,21 @@ exports.insertLocation = async (locations) => {
     return false
   }
 
-  const query = await sql`insert into locations ${sql(locationsMapped, ...keys)}`
-  return query || false
+  const query = await sql`insert into locations ${sql(locationsMapped, ...keys)} returning *`
+  return query[0] || false
 }
 exports.validateLocation = async (locationId) => {
-  try {
-    return await sql`update locations set isValidated = true
-    where id = ${locationId}`
-  } catch (e) {
-    console.log(e)
-    return null
-  }
+    return await sql`update locations set isValidated = true where id = ${locationId}`
 }
 
 exports.updateLocation = async (locationId, location) => {
   const keys = Object.keys(location)
   if (!keys.length) {
-    return false
+    throw new Error('No keys to update');
   }
 
-  const query = await sql`update locations set ${sql(location, ...keys)}
+  return await sql`update locations set ${sql(location, ...keys)}
     where id = ${locationId}`
-
-  return query || false
 }
 
 exports.disableHatay = async (locationId) => {
@@ -60,59 +64,47 @@ exports.disableHatay = async (locationId) => {
 }
 
 exports.deleteLocation = async (locationId) => {
-  const query = await sql`delete from locations where id = ${locationId}`
-
-  return query || false
+  return await sql`delete from locations where id = ${locationId}`
 }
 
 exports.getAllTypes = async () => {
-  const query = await sql`select * from types`
-
-  return query || false
+  return await sql`select * from types`
 }
 
 exports.insertType = async (type) => {
-  const query = await sql`insert into types ${sql(type, 'name')}`
-
-  return query || false
+  return await sql`insert into types ${sql(type, 'name')}`
 }
 
 exports.updateType = async (typeId, type) => {
   const typeKeys = Object.keys(type)
-
-  const query = await sql`update types set ${sql(type, ...typeKeys)} where id = ${typeId}`
-
-  return query || false
+  return await sql`update types set ${sql(type, ...typeKeys)} where id = ${typeId}`
 }
 
 exports.deleteType = async (typeId) => {
   const query = await sql`delete from types where id = ${typeId}`
-  if (!query) return false
+  if (!query) {
+    throw new Error('Type not found')
+  }
   return query
 }
 
 exports.getAllSubtypes = async () => {
-  const query = await sql`select * from subtypes`
-  if (!query) return false
-  return query
+  return await sql`select * from subtypes`
 }
 
 exports.insertSubtype = async (subtype) => {
-  const query = await sql`insert into subtypes ${sql(subtype, 'typeId', 'name')}`
-
-  return query || false
+  return await sql`insert into subtypes ${sql(subtype, 'typeId', 'name')}`
 }
 
 exports.updateSubtype = async (subtypeId, subtype) => {
   const subtypeKeys = Object.keys(type)
-
-  const query = await sql`update subtypes set ${sql(subtype, ...subtypeKeys)} where id = ${subtypeId}`
-
-  return query || false
+  return await sql`update subtypes set ${sql(subtype, ...subtypeKeys)} where id = ${subtypeId}`
 }
 
 exports.deleteSubtype = async (subtypeId) => {
-  const query = await sql`delete from subtypes where id = ${subtypeId}`
-
-  return query || false
+  return await sql`delete from subtypes where id = ${subtypeId}`
 }
+
+exports.deleteAllLocations = async () => {
+  return await sql`delete from locations`
+};

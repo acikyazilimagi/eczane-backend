@@ -1,4 +1,4 @@
-const { getAllLocations, getAllLocationsAdmin, insertLocation, updateLocation, deleteLocation, disableHatay } = require('../db')
+const { getAllLocations, getLocation, getAllLocationsAdmin, insertLocation, updateLocation, deleteLocation } = require('../db')
 
 module.exports = {
   getAllLocations: async (req, res, next) => {
@@ -13,7 +13,10 @@ module.exports = {
 
   postLocation: async (req, res, next) => {
     const location = req.body
-    res.data = await insertLocation(location)
+    const data = await insertLocation(location)
+    const failed = data === false
+    res.data = data
+    res.statusCode = failed ? 500 : 201
     next()
   },
 
@@ -26,8 +29,21 @@ module.exports = {
   },
 
   deleteLocation: async (req, res, next) => {
+    try {
+      const { id } = req.params
+      res.data = await deleteLocation(id)
+      next()
+    } catch(err) {
+      if (err.status === 404) {
+        res.statusCode = 404
+      }
+      next(err)
+    }
+  },
+
+  getLocation: async (req, res, next) => {
     const { id } = req.params
-    res.data = await deleteLocation(id)
+    res.data = await getLocation(id)
     next()
   },
 
