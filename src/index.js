@@ -1,4 +1,5 @@
 const app = require('./app')
+const { config } = require('./config')
 
-const port = process.env.ECZ_PORT || process.env.PORT || 3000;
-app.listen(port);
+const port = config.app.port
+app.listen(port)

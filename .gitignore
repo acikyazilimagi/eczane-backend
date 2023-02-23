@@ -1,6 +1,5 @@
 node_modules/
 .env
-config/
 edit-data.js
 .idea/
 .DS_Store

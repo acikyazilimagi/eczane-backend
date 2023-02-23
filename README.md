@@ -5,20 +5,25 @@ Kullanılabilir durumdaki sağlık birimlerinin datasını gönderen API.
 ## Setup
 
 ### Requirements
+
 Latest version of Node.js and PostgreSQL.
 
 ### Installation
 
 1. Clone the repository.
+
 ```bash
 git clone {YOUR_FORKED_REPOSITORY_URL}
 ```
+
 2. Install dependencies.
+
 ```bash
 npm install
 ```
 
 3. Run a PostgreSQL server on your machine, preferably with Docker.
+
 ```bash
 docker run -p 127.0.0.1:5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=eczane-backend-dev -e POSTGRES_USER=postgres -e POSTGRES_ROOT_PASSWORD=postgres -d postgres
 
@@ -28,6 +33,7 @@ docker run -p 127.0.0.1:5455:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=e
 ```
 
 4. Create a `.env` file in the root directory of the project and fill it with the following variables.
+
 ```bash
 
 # Database
@@ -43,6 +49,7 @@ ECZ_PORT=3000
 ```
 
 5. Load the environment variables.
+
 ```bash
 source .env
 ```
@@ -62,10 +69,10 @@ DATABASE_URL=postgres://postgres:postgres@localhost:5455/eczane-backend-test npm
 ```
 
 7. Run the server.
+
 ```bash
 npm run dev
 ```
-
 
 ## API
 
@@ -99,7 +106,6 @@ GET `https://eczaneapi.afetharita.com/api/locations`
         ...
 ]}
 ```
-
 
 ### Get Types
 

@@ -1,7 +1,5 @@
 const { auth } = require('../middleware/auth')
 const CONTROLLER = require('../controllers/location')
-const VALIDATION = require('../middleware/validation/schemas/location')
-const { validateRequest } = require('../middleware/validation/validate')
 
 module.exports = {
   getAllLocations: {

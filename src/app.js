@@ -1,4 +1,3 @@
-require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 require('express-async-errors')
@@ -6,7 +5,6 @@ const { errorHandler } = require('./middleware/error')
 const { response } = require('./middleware/response')
 
 class App {
-
   express
   #routes
 
@@ -33,6 +31,6 @@ class App {
   }
 }
 
-const app = new App();
+const app = new App()
 
 module.exports = app

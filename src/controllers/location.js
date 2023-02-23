@@ -6,6 +6,7 @@ module.exports = {
     next()
   },
 
+  /* returns validated AND not validated fields */
   getAllLocationsAdmin: async (req, res, next) => {
     res.data = await getAllLocationsAdmin()
     next()
@@ -33,7 +34,7 @@ module.exports = {
       const { id } = req.params
       res.data = await deleteLocation(id)
       next()
-    } catch(err) {
+    } catch (err) {
       if (err.status === 404) {
         res.statusCode = 404
       }

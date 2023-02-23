@@ -1,7 +1,9 @@
 const cityData = require('../../data/cities-with-districts.json')
+const { auth } = require('../middleware/auth')
+const CONTROLLER = require('../controllers/city')
 
 module.exports = {
-  cityWithDistricts: {
+  getAllCitiesWithDistricts: {
     method: 'get',
     path: '/cityWithDistricts',
     middleware: [],
@@ -19,5 +21,4 @@ module.exports = {
     middleware: [auth],
     handler: (req, res, next) => CONTROLLER.updateCity(req, res, next),
   },
-  
 }
