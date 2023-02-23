@@ -16,6 +16,7 @@ const {
   validateLocation,
   disableHatay,
   updateCity,
+  listCities,
 } = require('./queries')
 
 module.exports = {
@@ -36,4 +37,5 @@ module.exports = {
   validateLocation,
   disableHatay,
   updateCity,
+  listCities,
 }

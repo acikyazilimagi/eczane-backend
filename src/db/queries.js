@@ -113,3 +113,7 @@ exports.updateCity = async (cityId, city) => {
   const cityKeys = Object.keys(city)
   return await sql`update cities set ${sql(city, ...cityKeys)} where id = ${cityId}`
 }
+
+exports.listCities = async () => {
+  return await sql`select * from cities where "isActive" = true`
+}

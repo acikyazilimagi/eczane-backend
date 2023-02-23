@@ -44,7 +44,7 @@ ECZ_DB_PASSWORD=postgres
 ECZ_DB_NAME=eczane-backend-dev
 
 # Server
-ECZ_PORT=3000
+ECZ_APP_PORT=3000
 
 ```
 

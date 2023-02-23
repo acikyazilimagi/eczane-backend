@@ -15,6 +15,13 @@ module.exports = {
     },
   },
 
+  listCities: {
+    method: 'get',
+    path: '/cities',
+    middleware: [],
+    handler:  (req, res, next) => CONTROLLER.listCities(req, res, next),
+  },
+
   updateCity: {
     method: 'put',
     path: '/city/:id',
