@@ -12,4 +12,12 @@ module.exports = {
       })
     },
   },
+
+  updateCity: {
+    method: 'put',
+    path: '/city/:id',
+    middleware: [auth],
+    handler: (req, res, next) => CONTROLLER.updateCity(req, res, next),
+  },
+  
 }

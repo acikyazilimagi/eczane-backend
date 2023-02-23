@@ -15,6 +15,7 @@ const {
   deleteSubtype,
   validateLocation,
   disableHatay,
+  updateCity,
 } = require('./queries')
 
 module.exports = {
@@ -34,4 +35,5 @@ module.exports = {
   deleteSubtype,
   validateLocation,
   disableHatay,
+  updateCity,
 }

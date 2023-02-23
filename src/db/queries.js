@@ -108,3 +108,8 @@ exports.deleteSubtype = async (subtypeId) => {
 exports.deleteAllLocations = async () => {
   return await sql`delete from locations`
 };
+
+exports.updateCity = async (cityId, city) => {
+  const cityKeys = Object.keys(city)
+  return await sql`update cities set ${sql(city, ...cityKeys)} where id = ${cityId}`
+}
