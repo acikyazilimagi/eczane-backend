@@ -9,7 +9,6 @@ exports.routes = () => {
     .readdirSync(normalizedPaths)
     .forEach((filename) => {
       if (filename === 'index.js') return
-
       filename = filename.replace('.js', '')
       const routeFile = require(path.join(__dirname, '../routes', filename))
       for (const [_, route] of Object.entries(routeFile)) {

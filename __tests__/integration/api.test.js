@@ -1,148 +1,54 @@
-const request = require('supertest');
-const { deleteAllLocations } = require('../../src/db/queries');
-const app = require('../../src/app');
-const server = app.express;
+const request = require('supertest')
+const { deleteAllLocations } = require('../../src/db/queries')
+const app = require('../../src/app')
+const server = app.express
 
-const API_END_POINT = '/api';
+const API_END_POINT = '/api'
 
-describe('Health API', () => {
-  it('health responds with 200', async () => {
-    const res = await request(server).get(`${API_END_POINT}/health`)
-    expect(res.statusCode).toBe(200)
-  });
-});
+describe('API tests', () => {
+  afterAll(() => {})
 
-describe('cityWithDistricts API', () => {
-  it('should return all cities with their districts', async () => {
-    const { statusCode, body } = await request(server).get(`${API_END_POINT}/cityWithDistricts`)
-
-    expect(statusCode).toBe(200)
-    expect(body.ok).toBe(true)
-    expect(body.data[0].id).toBe(1)
-    expect(body.data[0].key).toBe("Adana")
-    expect(body.data[0].districts.length).toBe(15)
+  describe('Health API', () => {
+    it('health responds with 200', async () => {
+      const res = await request(server).get(`${API_END_POINT}/health`)
+      expect(res.statusCode).toBe(200)
+    })
   })
-});
 
-describe('types API', () => {
-  it('should return all types', async () => {
-    const { body } = await request(server).get(`${API_END_POINT}/types`)
+  describe('cityWithDistricts API', () => {
+    it('should return all cities with their districts', async () => {
+      const { statusCode, body } = await request(server).get(`${API_END_POINT}/cityWithDistricts`)
 
-    expect(body.data[0].id).toBe(1)
-    expect(body.data[0].name).toBe("Hastane")
+      expect(statusCode).toBe(200)
+      expect(body.ok).toBe(true)
+      expect(body.data[0].id).toBe(1)
+      expect(body.data[0].key).toBe('Adana')
+      expect(body.data[0].districts.length).toBe(15)
+    })
   })
-});
 
-describe('subtypes API', () => {
-  it('should return all types', async () => {
-    const { body } = await request(server).get(`${API_END_POINT}/subtypes`)
+  describe('types API', () => {
+    it('should return all types', async () => {
+      const { body } = await request(server).get(`${API_END_POINT}/types`)
 
-    expect(body.data[0].id).toBe(2)
-    expect(body.data[0].typeId).toBe(1)
-    expect(body.data[0].name).toBe("Genel")
+      expect(body.data[0].id).toBe(1)
+      expect(body.data[0].name).toBe('Hastane')
+    })
   })
-});
 
-describe('locations API', () => {
+  describe('subtypes API', () => {
+    it('should return all types', async () => {
+      const { body } = await request(server).get(`${API_END_POINT}/subtypes`)
 
-  const location = {
-    name: 'Location 2',
-    typeId: 2,
-    subTypeId: 2,
-    cityId: 2,
-    districtId: 2,
-    latitude: 2.0,
-    longitude: 2.0,
-    phone: '1234567890',
-    address: '123 Main St',
-    additionalAddressDetails: '',
-    workingHours: '',
-    code: 'LOC2',
-    isValidated: true,
-  }
+      expect(body.data[0].id).toBe(2)
+      expect(body.data[0].typeId).toBe(1)
+      expect(body.data[0].name).toBe('Genel')
+    })
+  })
 
-  beforeAll(async () => {
-    await deleteAllLocations()
-  });
-
-  afterAll(async () => {
-    await deleteAllLocations()
-  });
-
-  it('should be able to insert a location', async () => {
-    const { statusCode } = await request(server).post(`${API_END_POINT}/location`)
-      .send(location)
-
-    expect(statusCode).toBe(201)
-  });
-
-  it('should be able to delete a location', async () => {
-    const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`)
-      .send(location)
-
-    expect(statusCode).toBe(201)
-
-    const deletedRecord = await request(server).delete(`${API_END_POINT}/location/${body.data.id}`)
-
-    expect(deletedRecord.statusCode).toBe(200)
-  });
-
-  it('should list only validated locations', async () => {
-    const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`)
-      .send(location)
-
-    expect(statusCode).toBe(201)
-
-    const all = await request(server).get(`${API_END_POINT}/locations`)
-
-    // Check all.data has newly created location
-    expect(all.statusCode).toBe(200)
-    expect(all.body.data.length).toBeGreaterThan(0)
-    expect(all.body.data.some(loc => loc.id === body.data.id)).toBe(true)
-
-  });
-
-
-  it('should NOT list unvalidated locations', async () => {
-    var unvalidatedLocation = location
-    unvalidatedLocation.isValidated = false
-    const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`)
-      .send(unvalidatedLocation)
-
-    expect(statusCode).toBe(201)
-
-    const all = await request(server).get(`${API_END_POINT}/locations`)
-
-    expect(all.statusCode).toBe(200)
-    expect(all.body.data.length).toBeGreaterThan(0)
-    expect(all.body.data.some(loc => loc.id === body.data.id)).toBe(false)
-
-  });
-
-  it('Admin should be able to list unvalidated locations', async () => {
-    var unvalidatedLocation = location
-    unvalidatedLocation.isValidated = false
-    const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`)
-      .send(unvalidatedLocation)
-
-    expect(statusCode).toBe(201)
-
-    const all = await request(server).get(`${API_END_POINT}/locations/admin`)
-
-    expect(all.statusCode).toBe(200)
-    expect(all.body.data.length).toBeGreaterThan(0)
-    expect(all.body.data.some(loc => loc.id === body.data.id)).toBe(true)
-
-  });
-
-  it('should be able to update a location', async () => {
-    const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`)
-      .send(location)
-
-    expect(statusCode).toBe(201)
-
-    const updatedLocation = {
-      name: 'Updated Location',
+  describe('locations API', () => {
+    const location = {
+      name: 'Location 2',
       typeId: 2,
       subTypeId: 2,
       cityId: 2,
@@ -157,48 +63,126 @@ describe('locations API', () => {
       isValidated: true,
     }
 
-    const updatedRecord = await request(server).put(`${API_END_POINT}/location/${body.data.id}`)
-      .send(updatedLocation)
+    beforeAll(async () => {
+      await deleteAllLocations()
+    })
 
-    expect(updatedRecord.statusCode).toBe(200)
+    afterAll(async () => {
+      await deleteAllLocations()
+    })
 
-    const updatedLocationFromDb = await request(server).get(`${API_END_POINT}/location/${body.data.id}`)
+    it('should be able to insert a location', async () => {
+      const { statusCode } = await request(server).post(`${API_END_POINT}/location`).send(location)
+      expect(statusCode).toBe(201)
+    })
 
-    expect(updatedLocationFromDb.statusCode).toBe(200)
-    expect(updatedLocationFromDb.body.data.name).toBe(updatedLocation.name)
+    it('should be able to delete a location', async () => {
+      const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`).send(location)
+      expect(statusCode).toBe(201)
 
+      const deletedRecord = await request(server).delete(`${API_END_POINT}/location/${body.data.id}`)
+      expect(deletedRecord.statusCode).toBe(200)
+    })
 
-  });
+    it('should list only validated locations', async () => {
+      const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`).send(location)
+      expect(statusCode).toBe(201)
 
-  it('should allow additional JSON data to be added to a location', async () => {
-    const additional = {
-      ...location,
-      additional_data: {
-        foo: 'bar',
-        baz: 'qux',
-        list: [1, 2, 3],
+      const all = await request(server).get(`${API_END_POINT}/locations`)
+
+      // Check all.data has newly created location
+      expect(all.statusCode).toBe(200)
+      expect(all.body.data.length).toBeGreaterThan(0)
+      expect(all.body.data.some((loc) => loc.id === body.data.id)).toBe(true)
+    })
+
+    it('should NOT list unvalidated locations', async () => {
+      var unvalidatedLocation = location
+      unvalidatedLocation.isValidated = false
+      const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`).send(unvalidatedLocation)
+
+      expect(statusCode).toBe(201)
+
+      const all = await request(server).get(`${API_END_POINT}/locations`)
+
+      expect(all.statusCode).toBe(200)
+      expect(all.body.data.length).toBeGreaterThan(0)
+      expect(all.body.data.some((loc) => loc.id === body.data.id)).toBe(false)
+    })
+
+    it('Admin should be able to list unvalidated locations', async () => {
+      var unvalidatedLocation = location
+      unvalidatedLocation.isValidated = false
+      const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`).send(unvalidatedLocation)
+
+      expect(statusCode).toBe(201)
+
+      const all = await request(server).get(`${API_END_POINT}/locations/admin`)
+
+      expect(all.statusCode).toBe(200)
+      expect(all.body.data.length).toBeGreaterThan(0)
+      expect(all.body.data.some((loc) => loc.id === body.data.id)).toBe(true)
+    })
+
+    it('should be able to update a location', async () => {
+      const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`).send(location)
+
+      expect(statusCode).toBe(201)
+
+      const updatedLocation = {
+        name: 'Updated Location',
+        typeId: 2,
+        subTypeId: 2,
+        cityId: 2,
+        districtId: 2,
+        latitude: 2.0,
+        longitude: 2.0,
+        phone: '1234567890',
+        address: '123 Main St',
+        additionalAddressDetails: '',
+        workingHours: '',
+        code: 'LOC2',
+        isValidated: true,
       }
-    }
 
-    const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`).send(additional)
+      const updatedRecord = await request(server).put(`${API_END_POINT}/location/${body.data.id}`).send(updatedLocation)
 
-    expect(statusCode).toBe(201)
-    expect(body.data.id).toBeGreaterThan(0)
-    expect(body.data.additional_data.foo).toBe(additional.additional_data.foo)
-    expect(body.data.additional_data.baz).toBe(additional.additional_data.baz)
-    expect(body.data.additional_data.list).toEqual(additional.additional_data.list)
+      expect(updatedRecord.statusCode).toBe(200)
 
-  });
+      const updatedLocationFromDb = await request(server).get(`${API_END_POINT}/location/${body.data.id}`)
 
-  it('should not allow to SQL injection', async () => {
-    const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`)
-      .send(location)
+      expect(updatedLocationFromDb.statusCode).toBe(200)
+      expect(updatedLocationFromDb.body.data.name).toBe(updatedLocation.name)
+    })
 
-    expect(statusCode).toBe(201)
-    expect(body.data.id).toBeGreaterThan(0)
+    it('should allow additional JSON data to be added to a location', async () => {
+      const additional = {
+        ...location,
+        additional_data: {
+          foo: 'bar',
+          baz: 'qux',
+          list: [1, 2, 3],
+        },
+      }
 
-    const injectionRequest = await request(server).delete(`${API_END_POINT}/location/${body.data.id}; DROP TABLE locations;`)
+      const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`).send(additional)
 
-    expect(injectionRequest.statusCode).toBe(500)
-  });
-});
+      expect(statusCode).toBe(201)
+      expect(body.data.id).toBeGreaterThan(0)
+      expect(body.data.additional_data.foo).toBe(additional.additional_data.foo)
+      expect(body.data.additional_data.baz).toBe(additional.additional_data.baz)
+      expect(body.data.additional_data.list).toEqual(additional.additional_data.list)
+    })
+
+    it('should not allow to SQL injection', async () => {
+      const { statusCode, body } = await request(server).post(`${API_END_POINT}/location`).send(location)
+
+      expect(statusCode).toBe(201)
+      expect(body.data.id).toBeGreaterThan(0)
+
+      const injectionRequest = await request(server).delete(`${API_END_POINT}/location/${body.data.id}; DROP TABLE locations;`)
+
+      expect(injectionRequest.statusCode).toBe(500)
+    })
+  })
+})
