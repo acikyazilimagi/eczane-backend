@@ -52,9 +52,13 @@ source .env
 ```bash
 #  Run the migration on dev / prod database
 DATABASE_URL=postgres://$ECZ_DB_USER:$ECZ_DB_PASSWORD@$ECZ_DB_HOST:$ECZ_DB_PORT/$ECZ_DB_NAME npm run migrate up
+# Downgrade the db
+DATABASE_URL=postgres://$ECZ_DB_USER:$ECZ_DB_PASSWORD@$ECZ_DB_HOST:$ECZ_DB_PORT/$ECZ_DB_NAME npm run migrate down
 
 #  Run the migration on test database
 DATABASE_URL=postgres://postgres:postgres@localhost:5455/eczane-backend-test npm run migrate up
+# Downgrade the db on test database
+DATABASE_URL=postgres://postgres:postgres@localhost:5455/eczane-backend-test npm run migrate down
 ```
 
 7. Run the server.

@@ -37,9 +37,9 @@ describe('subtypes API', () => {
   it('should return all types', async () => {
     const { body } = await request(server).get(`${API_END_POINT}/subtypes`)
 
-    expect(body.data[0].id).toBe(1)
+    expect(body.data[0].id).toBe(2)
     expect(body.data[0].typeId).toBe(1)
-    expect(body.data[0].name).toBe("Acil")
+    expect(body.data[0].name).toBe("Genel")
   })
 });
 

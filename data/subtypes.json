@@ -1,32 +1,37 @@
 [
     {
-        "id": 1,
-        "name": "Acil",
-        "typeId": 1
-    },
-    {
         "id": 2,
-        "name": "Genel",
-        "typeId": 1
-    },
-    {
-        "id": 3,
-        "name": "Acil",
-        "typeId": 2
+        "typeId": 1,
+        "name": "Genel"
     },
     {
         "id": 4,
-        "name": "Genel",
-        "typeId": 2
-    },
-    {
-        "id": 5,
-        "name": "Sahra Hastanesi",
-        "typeId": 1
+        "typeId": 2,
+        "name": "Genel"
     },
     {
         "id": 6,
-        "name": "Sahra Eczanesi",
-        "typeId": 2
+        "typeId": 2,
+        "name": "Sahra Eczanesi"
+    },
+    {
+        "id": 5,
+        "typeId": 1,
+        "name": "Sahra Hastanesi"
+    },
+    {
+        "id": 10,
+        "typeId": 4,
+        "name": "Genel"
+    },
+    {
+        "id": 8,
+        "typeId": 3,
+        "name": "Genel"
+    },
+    {
+        "id": 1,
+        "typeId": 1,
+        "name": "Gemi Hastanesi"
     }
 ]

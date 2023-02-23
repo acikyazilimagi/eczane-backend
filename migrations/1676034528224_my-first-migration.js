@@ -56,6 +56,8 @@ exports.up = (pgm) => {
     typeId: { type: 'integer', notNull: true, references: 'types' },
     subTypeId: { type: 'integer', notNull: true, references: 'subtypes' },
     isValidated: {type: 'boolean', notNull: true, default: false},
+    isvalidatedapi: {type: 'boolean', notNull: true, default: false},
+    additional_data: {type: 'jsonb'},
     createdAt: {
       type: 'timestamp',
       notNull: true,
@@ -83,4 +85,20 @@ exports.up = (pgm) => {
     }
   }
 
+  const locations = require('../data/locations.json')
+  for (const location of locations) {
+    pgm.sql(`INSERT INTO locations VALUES (${location.id}, '${location.code}', '${location.name}', 
+    '${location.phone}', '${location.address}', '${location.additionalAddressDetails}', '${location.workingHours}',
+     ${location.latitude}, ${location.longitude}, ${location.cityId}, ${location.districtId}, ${location.typeId}, 
+     ${location.subTypeId}, ${location.isValidated}, ${location.isvalidatedapi}, 
+     '${JSON.stringify(location.additional_data)}')`)
+  }
+}
+
+exports.down = (pgm) => {
+  pgm.dropTable('locations')
+  pgm.dropTable('subtypes')
+  pgm.dropTable('types')
+  pgm.dropTable('districts')
+  pgm.dropTable('cities')
 }
