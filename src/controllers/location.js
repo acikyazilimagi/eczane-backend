@@ -23,7 +23,6 @@ module.exports = {
 
   updateLocation: async (req, res, next) => {
     const { id } = req.params
-    console.log('here', id)
     const location = req.body
     res.data = await updateLocation(id, location)
     next()
