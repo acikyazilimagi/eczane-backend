@@ -15,7 +15,7 @@ describe('API tests', () => {
     })
   })
 
-  describe('cityWithDistricts API', () => {
+  describe('citites API', () => {
     it('should return all cities with their districts', async () => {
       const { statusCode, body } = await request(server).get(`${API_END_POINT}/cityWithDistricts`)
 
@@ -24,6 +24,86 @@ describe('API tests', () => {
       expect(body.data[0].id).toBe(1)
       expect(body.data[0].key).toBe('Adana')
       expect(body.data[0].districts.length).toBe(15)
+    })
+
+    it('should return all active cities', async () => {
+      const { statusCode, body } = await request(server).get(`${API_END_POINT}/cities`)
+
+      expect(statusCode).toBe(200)
+      expect(body.data[0].id).toBeDefined()
+      expect(typeof body.data[0].name).toBe('string')
+      expect(typeof body.data[0].isActive).toBe('boolean')
+    })
+
+    it('should update the name property of a city and take it back', async () => {
+      // get a city from /cities
+      const { statusCode, body } = await request(server).get(`${API_END_POINT}/cities`)
+
+      const city = body.data[0]
+      const newCity = {
+        ...city,
+        name: 'New City Name',
+        isActive: city.isActive,
+      }
+
+      // delete the id field
+      delete newCity.id
+
+      // update the city
+      const { statusCode: updateStatusCode } = await request(server).put(`${API_END_POINT}/city/${city.id}`).send(newCity)
+      expect(updateStatusCode).toBe(200)
+
+      // get the city again
+      const { statusCode: getStatusCode, body: getBody } = await request(server).get(`${API_END_POINT}/cities`)
+      expect(getStatusCode).toBe(200)
+
+      // check if the city is updated
+      const updatedCity = getBody.data.find((c) => c.id === city.id)
+
+      expect(updatedCity.name).toBe(newCity.name)
+      expect(updatedCity.isActive).toBe(city.isActive)
+
+      // take the city back
+      const { statusCode: takeBackStatusCode } = await request(server).put(`${API_END_POINT}/city${city.id}`).send(city)
+      expect(takeBackStatusCode).toBe(200)
+    })
+
+    it('should update the isActive property of a city and take it back', async () => {
+      // get a city from /cities
+      const { statusCode, body } = await request(server).get(`${API_END_POINT}/cities`)
+
+      const city = body.data[0]
+      const newCity = {
+        ...city,
+        name: city.name,
+        isActive: !city.isActive,
+      }
+
+      // delete the id field
+      delete newCity.id
+
+      // update the city
+      const { statusCode: updateStatusCode } = await request(server).put(`${API_END_POINT}/city/${city.id}`).send(newCity)
+      expect(updateStatusCode).toBe(200)
+
+      // get the city again
+      const { statusCode: getStatusCode, body: getBody } = await request(server).get(`${API_END_POINT}/cities`)
+
+      // make sure the city does not exist here
+      const updatedCity = getBody.data.find((c) => c.id === city.id)
+      expect(updatedCity).toBeUndefined()
+
+      // take the city back
+      const { statusCode: takeBackStatusCode } = await request(server).put(`${API_END_POINT}/city/${city.id}`).send(city)
+      expect(takeBackStatusCode).toBe(200)
+
+      // make sure the city now exists in get
+      const { statusCode: getStatusCode2, body: getBody2 } = await request(server).get(`${API_END_POINT}/cities`)
+      expect(getStatusCode2).toBe(200)
+
+      // filter the city
+      const updatedCity2 = getBody2.data.find((c) => c.id === city.id)
+      expect(updatedCity2).toBeDefined()
     })
   })
 

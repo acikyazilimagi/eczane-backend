@@ -36,15 +36,22 @@ docker run -p 127.0.0.1:5455:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=e
 
 ```bash
 
-# Database
+# Dev database
 ECZ_DB_HOST=localhost
 ECZ_DB_PORT=5432
 ECZ_DB_USER=postgres
 ECZ_DB_PASSWORD=postgres
 ECZ_DB_NAME=eczane-backend-dev
 
+# Test database (needed if you will run tests)
+ECZ_TEST_DB_HOST=localhost
+ECZ_TEST_DB_PORT=5455
+ECZ_TEST_DB_USER=postgres
+ECZ_TEST_DB_PASSWORD=postgres
+ECZ_TEST_DB_NAME=eczane-backend-test
+
 # Server
-ECZ_APP_PORT=3000
+ECZ_PORT=3000
 
 ```
 

@@ -7,6 +7,6 @@ module.exports = {
     username: process.env.ECZ_DB_USER,
   },
   app: {
-    port: process.env.ECZ_APP_PORT || 8080,
+    port: process.env.ECZ_PORT || process.env.PORT || 8080,
   },
 }
