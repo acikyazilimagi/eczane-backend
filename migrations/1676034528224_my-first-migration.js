@@ -1,4 +1,12 @@
 exports.up = (pgm) => {
+  // drop all tables
+
+  pgm.dropTable('locations')
+  pgm.dropTable('subtypes')
+  pgm.dropTable('types')
+  pgm.dropTable('districts')
+  pgm.dropTable('cities')
+
   pgm.createTable('cities', {
     id: 'id',
     name: { type: 'varchar(100)', notNull: true },

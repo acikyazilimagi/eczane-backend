@@ -7,12 +7,22 @@ WORKDIR /app
 
 COPY package*.json ./
 
+# custom
+COPY entrypoint.sh /usr/local/bin/ 
+
+# custom
+
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 RUN npm install
 
 COPY . .
 
 RUN apk add --no-cache tini
 
-ENTRYPOINT ["/sbin/tini", "--"]
+# custom
+ENTRYPOINT ["entrypoint.sh"]
+
+# ENTRYPOINT ["/sbin/tini", "--"]
 
 CMD ["node", "src/index.js"]
