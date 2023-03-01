@@ -1,7 +1,7 @@
 const { sql } = require('./connect')
 
 exports.getAllLocations = async () => {
-  const query = await sql`select * from locations as l inner join cities as c on l."cityId" = c.id where "isValidated"=true and c."isActive"=true`
+  const query = await sql`select l.* from locations as l inner join cities as c on l."cityId" = c.id where l."isValidated"=true and c."isActive"=true`
   return query || false
 }
 
