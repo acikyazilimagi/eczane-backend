@@ -15,7 +15,7 @@ describe('API tests', () => {
     })
   })
 
-  describe('citites API', () => {
+  describe('cityWithDistricts API', () => {
     it('should return all cities with their districts', async () => {
       const { statusCode, body } = await request(server).get(`${API_END_POINT}/cityWithDistricts`)
 
