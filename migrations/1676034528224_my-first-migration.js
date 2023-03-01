@@ -55,17 +55,15 @@ exports.up = (pgm) => {
     districtId: { type: 'integer', notNull: true, references: 'districts' },
     typeId: { type: 'integer', notNull: true, references: 'types' },
     subTypeId: { type: 'integer', notNull: true, references: 'subtypes' },
-    isValidated: {type: 'boolean', notNull: true, default: false},
-    isvalidatedapi: {type: 'boolean', notNull: true, default: false},
-    additional_data: {type: 'jsonb'},
+    isValidated: { type: 'boolean', notNull: true, default: false },
+    isvalidatedapi: { type: 'boolean', notNull: true, default: false },
+    additional_data: { type: 'jsonb' },
     createdAt: {
       type: 'timestamp',
       notNull: true,
       default: pgm.func('current_timestamp'),
     },
   })
-  
-  // Seed the db
 
   const types = require('../data/types.json')
   for (const type of types) {

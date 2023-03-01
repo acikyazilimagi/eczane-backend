@@ -1,9 +1,7 @@
-
 const { sql } = require('./connect')
 
 exports.getAllLocations = async () => {
-  const query = await sql`select * from locations where "isValidated"=true`
-
+  const query = await sql`select l.* from locations as l inner join cities as c on l."cityId" = c.id where l."isValidated"=true and c."isActive"=true`
   return query || false
 }
 
@@ -41,13 +39,13 @@ exports.insertLocation = async (locations) => {
   return query[0] || false
 }
 exports.validateLocation = async (locationId) => {
-    return await sql`update locations set isValidated = true where id = ${locationId}`
+  return await sql`update locations set isValidated = true where id = ${locationId}`
 }
 
 exports.updateLocation = async (locationId, location) => {
   const keys = Object.keys(location)
   if (!keys.length) {
-    throw new Error('No keys to update');
+    throw new Error('No keys to update')
   }
 
   return await sql`update locations set ${sql(location, ...keys)}
@@ -55,12 +53,7 @@ exports.updateLocation = async (locationId, location) => {
 }
 
 exports.disableHatay = async (locationId) => {
-  try {
-    return await sql`update locations set isValidated = false where cityId = 31`
-  } catch (e) {
-    console.log(e)
-    return null
-  }
+  return await sql`update locations set isValidated = false where cityId = 31`
 }
 
 exports.deleteLocation = async (locationId) => {
@@ -107,4 +100,13 @@ exports.deleteSubtype = async (subtypeId) => {
 
 exports.deleteAllLocations = async () => {
   return await sql`delete from locations`
-};
+}
+
+exports.updateCity = async (cityId, city) => {
+  const cityKeys = Object.keys(city)
+  return await sql`update cities set ${sql(city, ...cityKeys)} where id = ${cityId}`
+}
+
+exports.listCities = async () => {
+  return await sql`select * from cities where "isActive" = true`
+}

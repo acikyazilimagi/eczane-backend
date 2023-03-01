@@ -5,20 +5,25 @@ Kullanılabilir durumdaki sağlık birimlerinin datasını gönderen API.
 ## Setup
 
 ### Requirements
+
 Latest version of Node.js and PostgreSQL.
 
 ### Installation
 
 1. Clone the repository.
+
 ```bash
 git clone {YOUR_FORKED_REPOSITORY_URL}
 ```
+
 2. Install dependencies.
+
 ```bash
 npm install
 ```
 
 3. Run a PostgreSQL server on your machine, preferably with Docker.
+
 ```bash
 docker run -p 127.0.0.1:5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=eczane-backend-dev -e POSTGRES_USER=postgres -e POSTGRES_ROOT_PASSWORD=postgres -d postgres
 
@@ -28,14 +33,22 @@ docker run -p 127.0.0.1:5455:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=e
 ```
 
 4. Create a `.env` file in the root directory of the project and fill it with the following variables.
+
 ```bash
 
-# Database
+# Dev database
 ECZ_DB_HOST=localhost
 ECZ_DB_PORT=5432
 ECZ_DB_USER=postgres
 ECZ_DB_PASSWORD=postgres
 ECZ_DB_NAME=eczane-backend-dev
+
+# Test database (needed if you will run tests)
+ECZ_TEST_DB_HOST=localhost
+ECZ_TEST_DB_PORT=5455
+ECZ_TEST_DB_USER=postgres
+ECZ_TEST_DB_PASSWORD=postgres
+ECZ_TEST_DB_NAME=eczane-backend-test
 
 # Server
 ECZ_PORT=3000
@@ -43,6 +56,7 @@ ECZ_PORT=3000
 ```
 
 5. Load the environment variables.
+
 ```bash
 source .env
 ```
@@ -62,10 +76,10 @@ DATABASE_URL=postgres://postgres:postgres@localhost:5455/eczane-backend-test npm
 ```
 
 7. Run the server.
+
 ```bash
 npm run dev
 ```
-
 
 ## API
 
@@ -99,7 +113,6 @@ GET `https://eczaneapi.afetharita.com/api/locations`
         ...
 ]}
 ```
-
 
 ### Get Types
 
